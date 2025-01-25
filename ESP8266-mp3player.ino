@@ -195,8 +195,7 @@ void help() {
                     "resetEEPROM: clears all info in EEPROM, including local readings.\n"
                     "resetWIFI: deletes WIFI known networks\n"
                     "WIFISignal: WIFI RSSI\n"
-                    "scanNetworks: info about WIFI networks\n"
-                    "dumpEEPROM[?n=<positions_to_read>]: dumps EEPROM, n=10 if not specified\n\n",
+                    "scanNetworks: info about WIFI networks\n",
                     VERSION
             );
     restServer.send(200, "text/plain", buffer);
@@ -204,10 +203,10 @@ void help() {
 
 // Define routing
 void restServerRouting() {
-    restServer.on("/", HTTP_GET, []() {
-        restServer.send(200, F("text/html"),
-            F("Welcome to the REST Web Server"));
-    });
+    //restServer.on("/", HTTP_GET, []() {
+    //   restServer.send(200, F("text/html"),
+    //        F("Welcome to the REST Web Server"));
+    //});
     restServer.on(F("/help"), HTTP_GET, help);
     restServer.on(F("/helloWorld"), HTTP_GET, getHelloWord);
     restServer.on(F("/boardID"), HTTP_GET, boardID);
@@ -290,6 +289,25 @@ void readConfigFile(){
   }
 }
 
+void webServer() {
+  // Definir las rutas del servidor web
+  restServer.on("/", HTTP_GET, []() {
+    String html = "<html><head><meta charset='UTF-8'>";
+    html += "<style>";
+    html += "body { font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 0; text-align: center;}";
+    html += "h1 { color: #333; font-size: 36px; margin-top: 50px;}";
+    html += "p { margin-top: 20px;}";
+    html += "button { padding: 15px 30px; font-size: 18px; color: white; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;}";
+    html += "button:hover { background-color: #0056b3;}";
+    html += "</style>";
+    html += "</head><body>";
+    html += "<h1>Chimenea v1.0</h1>";
+    html += "<p><button onclick=\"location.href='/help'\">REST help</button></p>";
+    html += "</body></html>";
+    restServer.send(200, "text/html", html);
+  });
+}
+
 void setup() {
   Serial.begin(115200); 
 
@@ -336,7 +354,10 @@ void setup() {
     //end save
   }
 
-  // Set server routing
+  // web page
+  webServer();
+
+  // Other REST endpoints definition
   restServerRouting();
 
   // Set not found response
