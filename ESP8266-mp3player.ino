@@ -14,7 +14,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea.X"
-#define VERSION "20250126.48"
+#define VERSION "20250126.58"
 
 //EEPROM
 #define EEPROM_SIZE 4096
@@ -295,19 +295,7 @@ void readConfigFile(){
 void startWebServer() {
   // Definir las rutas del servidor web
   webServer.on("/", HTTP_GET, []() {
-    String html = "<html><head><meta charset='UTF-8'>";
-    html += "<style>";
-    html += "body { font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 0; text-align: center;}";
-    html += "h1 { color: #333; font-size: 36px; margin-top: 50px;}";
-    html += "p { margin-top: 20px;}";
-    html += "button { padding: 15px 30px; font-size: 18px; color: white; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;}";
-    html += "button:hover { background-color: #0056b3;}";
-    html += "</style>";
-    html += "</head><body>";
-    html += "<h1>Chimenea v1.0</h1>";
-    html += "<p><button onclick=\"location.href='/help'\">REST help</button></p>";
-    html += "</body></html>";
-    webServer.send(200, "text/html", html);
+    webServer.send(200, "text/html", webpage);
   });
 }
 

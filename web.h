@@ -4,7 +4,7 @@ const char webpage[] PROGMEM = R"=====(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Control</title>
+    <title>Chimenea</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,11 +44,11 @@ const char webpage[] PROGMEM = R"=====(
     </style>
 </head>
 <body>
-    <h1>Audio Control</h1>
+    <h1>Chimenea2000</h1>
     <div class="button-container">
-        <button onclick="sendCommand('left')">← Left</button>
-        <button onclick="sendCommand('play')">▶ Play</button>
-        <button onclick="sendCommand('right')">→ Right</button>
+        <button onclick="sendCommand('previous')"><<</button>
+        <button onclick="sendCommand('play')">▶</button>
+        <button onclick="sendCommand('next')">>></button>
         <button class="wide" onclick="sendCommand('volume-up')">Volume ↑</button>
         <button class="wide" onclick="sendCommand('volume-down')">Volume ↓</button>
         <button class="wide" onclick="sendCommand('stop')">■ Stop</button>
