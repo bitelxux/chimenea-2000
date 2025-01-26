@@ -2,14 +2,19 @@
 #include <FS.h>
 #include <ArduinoJson.h>     // 5.13.5 !!
 
-#include <btlx25.h>
+// tried many approaches to #include "btlx25/btlx25.h"
+// non worked. Workaround is to symlink the btlx25 folder to Arduino/libraries
+#include "btlx25.h"
+
+// html page for mp3 management
+#include "web.h"
 
 // This is for each variable to use it's real size when stored
 // in the EEPROM
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea.X"
-#define VERSION "20250126.13"
+#define VERSION "20250126.46"
 
 //EEPROM
 #define EEPROM_SIZE 4096
