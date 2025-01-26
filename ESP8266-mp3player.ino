@@ -7,14 +7,14 @@
 #include "btlx25.h"
 
 // html page for mp3 management
-#include "web.h"
+#include "web/web.h"
 
 // This is for each variable to use it's real size when stored
 // in the EEPROM
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea.X"
-#define VERSION "20250126.60"
+#define VERSION "20250126.61"
 
 //EEPROM
 #define EEPROM_SIZE 4096
