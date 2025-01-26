@@ -49,8 +49,8 @@ const char webpage[] PROGMEM = R"=====(
         <button onclick="sendCommand('previous')"><<</button>
         <button onclick="sendCommand('play')">▶</button>
         <button onclick="sendCommand('next')">>></button>
-        <button class="wide" onclick="sendCommand('volume-up')">Volume ↑</button>
-        <button class="wide" onclick="sendCommand('volume-down')">Volume ↓</button>
+        <button class="wide" onclick="sendCommand('volumeup')">Volume ↑</button>
+        <button class="wide" onclick="sendCommand('volumedown')">Volume ↓</button>
         <button class="wide" onclick="sendCommand('stop')">■ Stop</button>
     </div>
     <script>

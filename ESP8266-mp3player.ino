@@ -14,7 +14,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea.X"
-#define VERSION "20250126.58"
+#define VERSION "20250126.60"
 
 //EEPROM
 #define EEPROM_SIZE 4096
@@ -210,6 +210,14 @@ void webServerRouting() {
     //   webServer.send(200, F("text/html"),
     //        F("Welcome to the REST Web Server"));
     //});
+    // specific webpoints
+    webServer.on(F("/next"), HTTP_GET, next);
+    webServer.on(F("/previous"), HTTP_GET, previous);
+    webServer.on(F("/play"), HTTP_GET, play);
+    webServer.on(F("/volumeup"), HTTP_GET, volumeup);
+    webServer.on(F("/volumedown"), HTTP_GET, volumedown);
+    webServer.on(F("/stop"), HTTP_GET, stop);
+    // generic endpoints
     webServer.on(F("/help"), HTTP_GET, help);
     webServer.on(F("/helloWorld"), HTTP_GET, getHelloWord);
     webServer.on(F("/boardID"), HTTP_GET, boardID);
@@ -290,6 +298,30 @@ void readConfigFile(){
   } else {
     Serial.println("failed to mount FS");
   }
+}
+
+void play() {
+    app->log("play");
+}
+
+void next() {
+    app->log("next");
+}
+
+void previous() {
+    app->log("previous");
+}
+
+void volumeup() {
+    app->log("volume up");
+}
+
+void volumedown() {
+    app->log("volume down");
+}
+
+void stop() {
+    app->log("stop");
 }
 
 void startWebServer() {
