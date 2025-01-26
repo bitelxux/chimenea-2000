@@ -14,12 +14,10 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea.X"
-#define VERSION "20250126.61"
+#define VERSION "20250126.68"
 
 //EEPROM
 #define EEPROM_SIZE 4096
-
-#define BOOTS_ADDRESS 0  // 2 bytes. Next to use is 0x2
 
 #define RSSI_MAX -50  // maximum strength of signal in dBm
 #define RSSI_MIN -100 // minimum strength of signal in dBm
@@ -151,7 +149,7 @@ void uptime() {
 }
 
 void boots() {
-    sprintf(buffer, "%d\n", readBoots());
+    sprintf(buffer, "%d\n", app->readBoots());
     webServer.send(200, "text/plain", buffer);
 }
 
@@ -246,25 +244,9 @@ void handleNotFound() {
   webServer.send(404, "text/plain", message);
 }
 
-unsigned short readBoots(){
-    unsigned short boots;
-    EEPROM.get(BOOTS_ADDRESS, boots);
-    return boots;
-}
-
 void resetBoots(){
-    unsigned short boots = 0;
-    EEPROM.put(BOOTS_ADDRESS, boots);
-    EEPROM.commit();
+    app->resetBoots();
     webServer.send(200, "text/plain", "boots resetted\n");
-}
-
-int incBoots(){
-  unsigned short boots = readBoots();
-  boots ++;
-  EEPROM.put(BOOTS_ADDRESS, boots);
-  EEPROM.commit(); 
-  return boots;
 }
 
 void readConfigFile(){
@@ -391,7 +373,7 @@ void setup() {
 
   Serial.println("HTTP server started");
 
-  unsigned short boots = incBoots();
+  unsigned short boots = app->incBoots();
   sprintf(buffer, "boot: %d", boots);
   app->log(buffer);
 }
