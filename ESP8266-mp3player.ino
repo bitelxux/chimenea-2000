@@ -14,7 +14,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea.X"
-#define VERSION "20250126.46"
+#define VERSION "20250126.48"
 
 //EEPROM
 #define EEPROM_SIZE 4096
@@ -46,7 +46,7 @@ void saveConfigCallback () {
 
 char buffer[200];
 
-ESP8266WebServer restServer(80);
+ESP8266WebServer webServer(80);
 
 // This values  will depend on what the user configures
 // on the  WifiManager on the first connection
@@ -96,12 +96,12 @@ char* millis_to_human(unsigned long millis)
 
 // Serving Hello world
 void getHelloWord() {
-    restServer.send(200, "text/json", "{\"name\": \"Hello world\"}");
+    webServer.send(200, "text/json", "{\"name\": \"Hello world\"}");
 }
 
 void boardID() {
     sprintf(buffer, "%s\n", BOARD_ID);
-    restServer.send(200, "text/plain", buffer);
+    webServer.send(200, "text/plain", buffer);
 }
 
 void scan_networks() {
@@ -131,33 +131,33 @@ void scan_networks() {
                                        dBmtoPercentage(WiFi.RSSI(i)));
     }
   }
-  restServer.send(200, "text/plain", buffer);
+  webServer.send(200, "text/plain", buffer);
 }
 
 void wifi_signal() {
     sprintf(buffer, "%s [%d]\n", WiFi.SSID(), WiFi.RSSI());
-    restServer.send(200, "text/plain", buffer);
+    webServer.send(200, "text/plain", buffer);
 }
 
 
 void version() {
     sprintf(buffer, "%s\n", VERSION);
-    restServer.send(200, "text/plain", buffer);
+    webServer.send(200, "text/plain", buffer);
 }
 
 void uptime() {
     sprintf(buffer, "%s\n", millis_to_human(millis()));
-    restServer.send(200, "text/plain", buffer);
+    webServer.send(200, "text/plain", buffer);
 }
 
 void boots() {
     sprintf(buffer, "%d\n", readBoots());
-    restServer.send(200, "text/plain", buffer);
+    webServer.send(200, "text/plain", buffer);
 }
 
 void reboot() {
     app->log("Board is going to reboot");
-    restServer.send(200, "text/plain", "OK\n");
+    webServer.send(200, "text/plain", "OK\n");
     delay(2000);
     ESP.restart();
 }
@@ -201,41 +201,41 @@ void help() {
                     "scanNetworks: info about WIFI networks\n",
                     VERSION
             );
-    restServer.send(200, "text/plain", buffer);
+    webServer.send(200, "text/plain", buffer);
 }
 
 // Define routing
-void restServerRouting() {
-    //restServer.on("/", HTTP_GET, []() {
-    //   restServer.send(200, F("text/html"),
+void webServerRouting() {
+    //webServer.on("/", HTTP_GET, []() {
+    //   webServer.send(200, F("text/html"),
     //        F("Welcome to the REST Web Server"));
     //});
-    restServer.on(F("/help"), HTTP_GET, help);
-    restServer.on(F("/helloWorld"), HTTP_GET, getHelloWord);
-    restServer.on(F("/boardID"), HTTP_GET, boardID);
-    restServer.on(F("/version"), HTTP_GET, version);
-    restServer.on(F("/uptime"), HTTP_GET, uptime);
-    restServer.on(F("/boots"), HTTP_GET, boots);
-    restServer.on(F("/resetBoots"), HTTP_GET, resetBoots);
-    restServer.on(F("/reboot"), HTTP_GET, reboot);
-    restServer.on(F("/resetWIFI"), HTTP_GET, resetWIFI);
-    restServer.on(F("/WIFISignal"), HTTP_GET, wifi_signal);
-    restServer.on(F("/scanNetworks"), HTTP_GET, scan_networks);
+    webServer.on(F("/help"), HTTP_GET, help);
+    webServer.on(F("/helloWorld"), HTTP_GET, getHelloWord);
+    webServer.on(F("/boardID"), HTTP_GET, boardID);
+    webServer.on(F("/version"), HTTP_GET, version);
+    webServer.on(F("/uptime"), HTTP_GET, uptime);
+    webServer.on(F("/boots"), HTTP_GET, boots);
+    webServer.on(F("/resetBoots"), HTTP_GET, resetBoots);
+    webServer.on(F("/reboot"), HTTP_GET, reboot);
+    webServer.on(F("/resetWIFI"), HTTP_GET, resetWIFI);
+    webServer.on(F("/WIFISignal"), HTTP_GET, wifi_signal);
+    webServer.on(F("/scanNetworks"), HTTP_GET, scan_networks);
 }
 
 void handleNotFound() {
   String message = "File Not Found\n\n";
   message += "URI: ";
-  message += restServer.uri();
+  message += webServer.uri();
   message += "\nMethod: ";
-  message += (restServer.method() == HTTP_GET) ? "GET" : "POST";
+  message += (webServer.method() == HTTP_GET) ? "GET" : "POST";
   message += "\nArguments: ";
-  message += restServer.args();
+  message += webServer.args();
   message += "\n";
-  for (uint8_t i = 0; i < restServer.args(); i++) {
-    message += " " + restServer.argName(i) + ": " + restServer.arg(i) + "\n";
+  for (uint8_t i = 0; i < webServer.args(); i++) {
+    message += " " + webServer.argName(i) + ": " + webServer.arg(i) + "\n";
   }
-  restServer.send(404, "text/plain", message);
+  webServer.send(404, "text/plain", message);
 }
 
 unsigned short readBoots(){
@@ -248,7 +248,7 @@ void resetBoots(){
     unsigned short boots = 0;
     EEPROM.put(BOOTS_ADDRESS, boots);
     EEPROM.commit();
-    restServer.send(200, "text/plain", "boots resetted\n");
+    webServer.send(200, "text/plain", "boots resetted\n");
 }
 
 int incBoots(){
@@ -292,9 +292,9 @@ void readConfigFile(){
   }
 }
 
-void webServer() {
+void startWebServer() {
   // Definir las rutas del servidor web
-  restServer.on("/", HTTP_GET, []() {
+  webServer.on("/", HTTP_GET, []() {
     String html = "<html><head><meta charset='UTF-8'>";
     html += "<style>";
     html += "body { font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 0; text-align: center;}";
@@ -307,7 +307,7 @@ void webServer() {
     html += "<h1>Chimenea v1.0</h1>";
     html += "<p><button onclick=\"location.href='/help'\">REST help</button></p>";
     html += "</body></html>";
-    restServer.send(200, "text/html", html);
+    webServer.send(200, "text/html", html);
   });
 }
 
@@ -358,16 +358,16 @@ void setup() {
   }
 
   // web page
-  webServer();
+  startWebServer();
 
   // Other REST endpoints definition
-  restServerRouting();
+  webServerRouting();
 
   // Set not found response
-  restServer.onNotFound(handleNotFound);
+  webServer.onNotFound(handleNotFound);
   // Start server
 
-  restServer.begin();
+  webServer.begin();
 
   Serial.println("HTTP server started");
 
@@ -379,7 +379,7 @@ void setup() {
 void resetWIFI(){
   sprintf(buffer, "WIFI networks will be reset and board rebooted NOW");
   app->log(buffer);
-  restServer.send(200, "text/plain", buffer);
+  webServer.send(200, "text/plain", buffer);
   _resetWifi();
 }
 
@@ -391,6 +391,6 @@ void _resetWifi(){
 
 void loop() {
   app->attendTimers();
-  restServer.handleClient();
+  webServer.handleClient();
 }
 
