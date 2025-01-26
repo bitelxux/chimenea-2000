@@ -4,7 +4,7 @@ const char webpage[] PROGMEM = R"=====(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chimenea</title>
+    <title>Chimenea-2000</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,7 +44,7 @@ const char webpage[] PROGMEM = R"=====(
     </style>
 </head>
 <body>
-    <h1>Chimenea2000</h1>
+    <h1>Chimenea-2000</h1>
     <div class="button-container">
         <button onclick="sendCommand('previous')"><<</button>
         <button onclick="sendCommand('play')">▶</button>
