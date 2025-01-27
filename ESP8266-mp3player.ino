@@ -14,7 +14,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea.X"
-#define VERSION "20250127.77"
+#define VERSION "20250127.79"
 
 //EEPROM
 #define EEPROM_SIZE 4096
@@ -52,28 +52,6 @@ char server[16] = "";
 char log_server[30] = "";
 char baseURL[30] = "";
 
-
-void checkConnection()  {
-    if (WiFi.status() != WL_CONNECTED) {
-      Serial.println("Reconnecting to WiFi...");
-      WiFi.reconnect();
-      
-      int t = millis();
-      
-      while (millis() - t < 60000 && WiFi.status() != WL_CONNECTED){
-        delay(2000);
-        Serial.println("Reconnecting to WiFi...");
-      }
-
-      if (WiFi.status() == WL_CONNECTED){
-        Serial.println("WiFi reconnected!");
-      }
-      else {
-        Serial.println("Failed to reconnect to WiFi");
-      }
-
-    }
-}
 
 // Serving Hello world
 void getHelloWord() {
