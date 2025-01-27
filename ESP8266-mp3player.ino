@@ -14,7 +14,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea.X"
-#define VERSION "20250126.68"
+#define VERSION "20250127.77"
 
 //EEPROM
 #define EEPROM_SIZE 4096
@@ -75,23 +75,6 @@ void checkConnection()  {
     }
 }
 
-char* millis_to_human(unsigned long millis)
-{
-    char* buffer = new char[100];
-
-    int seconds = millis/1000;
-
-    int days = int(seconds/86400);
-    seconds = seconds % 86400;
-    int hours = int(seconds/3600);
-    seconds = seconds % 3600;
-    int minutes = int(seconds/60);
-    seconds = seconds % 60;
-
-    sprintf(buffer, "%d days, %d hours, %d minutes, %d seconds", days, hours, minutes, seconds);
-    return buffer;
-}
-
 // Serving Hello world
 void getHelloWord() {
     webServer.send(200, "text/json", "{\"name\": \"Hello world\"}");
@@ -144,7 +127,7 @@ void version() {
 }
 
 void uptime() {
-    sprintf(buffer, "%s\n", millis_to_human(millis()));
+    sprintf(buffer, "%s\n", app->millis_to_human(millis()));
     webServer.send(200, "text/plain", buffer);
 }
 
