@@ -7,16 +7,19 @@ class WEBServer {
     public:
         WEBServer(App* app);
         void start();
-	void configureEndPoints();
 	void handleClient();
-	void help();
-	void helloWorld();
-	void boardID();
     private:
         ESP8266WebServer* server;
         App* app;
         std::string getClientStrIP();
         void log(char* msg);
+	void configureEndPoints();
+	void help();
+	void helloWorld();
+	void boardID();
+	void version();
+	void uptime();
+	void boots();
 
         const char* webpage = R"=====(
         <!DOCTYPE html>

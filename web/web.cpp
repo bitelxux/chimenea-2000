@@ -33,9 +33,9 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/help"), HTTP_GET, [this]() { this->help(); });
   this->server->on(F("/helloWorld"), HTTP_GET, [this]() { this->helloWorld(); });
   this->server->on(F("/boardID"), HTTP_GET, [this]() { this->boardID(); });
-  //webServer.on(F("/version"), HTTP_GET, version);
-  //webServer.on(F("/uptime"), HTTP_GET, uptime);
-  //webServer.on(F("/boots"), HTTP_GET, boots);
+  this->server->on(F("/version"), HTTP_GET, [this]() { this->version(); });
+  this->server->on(F("/uptime"), HTTP_GET, [this]() { this->uptime(); });
+  this->server->on(F("/boots"), HTTP_GET, [this]() { this->boots(); });
   //webServer.on(F("/resetBoots"), HTTP_GET, resetBoots);
   //webServer.on(F("/reboot"), HTTP_GET, reboot);
   //webServer.on(F("/resetWIFI"), HTTP_GET, resetWIFI);
@@ -56,6 +56,27 @@ void WEBServer::log(char* msg) {
   std::string ipStr = this->getClientStrIP();
   sprintf(buffer, "[%s] %s", ipStr.c_str(), msg);
   this->app->log(buffer);
+}
+
+void WEBServer::boots() {
+  this->log("called /boots endpoint");
+  char buffer[20];
+  sprintf(buffer, "%d\n", this->app->readBoots());
+  this->server->send(200, "text/plain", buffer);
+}
+
+void WEBServer::uptime() {
+  this->log("called /uptime endpoint");
+  char buffer[20];
+  sprintf(buffer, "%s\n", this->app->millis_to_human(millis()));
+  this->server->send(200, "text/plain", buffer);
+}
+
+void WEBServer::version() {
+  this->log("called /version endpoint");
+  char buffer[20];
+  sprintf(buffer, "%s\n", VERSION);
+  this->server->send(200, "text/plain", buffer);
 }
 
 void WEBServer::boardID() {

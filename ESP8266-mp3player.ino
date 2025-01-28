@@ -75,21 +75,6 @@ void wifi_signal() {
 }
 
 
-void version() {
-  sprintf(buffer, "%s\n", VERSION);
-  //webServer.send(200, "text/plain", buffer);
-}
-
-void uptime() {
-  sprintf(buffer, "%s\n", app->millis_to_human(millis()));
-  //webServer.send(200, "text/plain", buffer);
-}
-
-void boots() {
-  sprintf(buffer, "%d\n", app->readBoots());
-  //webServer.send(200, "text/plain", buffer);
-}
-
 void reboot() {
   app->log("Board is going to reboot");
   //webServer.send(200, "text/plain", "OK\n");
