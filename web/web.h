@@ -14,6 +14,7 @@ class WEBServer {
         std::string getClientStrIP();
         void log(char* msg);
 	void configureEndPoints();
+	void handleNotFound();
 	void help();
 	void helloWorld();
 	void boardID();

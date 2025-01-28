@@ -228,20 +228,6 @@ void setup() {
   webServer = new WEBServer(app);
   webServer->start();
 
-  // web page
-  // startWebServer();
-
-  // Other REST endpoints definition
-  //webServerRouting();
-
-  // Set not found response
-  //webServer.onNotFound(handleNotFound);
-  // Start server
-
-  //webServer.begin();
-
-  Serial.println("HTTP server started");
-
   unsigned short boots = app->incBoots();
   sprintf(buffer, "boot: %d", boots);
   app->log(buffer);

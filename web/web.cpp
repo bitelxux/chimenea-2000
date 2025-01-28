@@ -14,11 +14,27 @@ void WEBServer::start() {
     });
 
     this->configureEndPoints();
+    this->server->onNotFound([this]() { this->handleNotFound(); });
     this->server->begin();
 }
 
 void WEBServer::handleClient() {
     this->server->handleClient();
+}
+
+void WEBServer::handleNotFound() {
+  String message = "Endpoint not nound\n\n";
+  message += "URI: ";
+  message +=  this->server->uri();
+  message += "\nMethod: ";
+  message += (this->server->method() == HTTP_GET) ? "GET" : "POST";
+  message += "\nArguments: ";
+  message += this->server->args();
+  message += "\n";
+  for (uint8_t i = 0; i < this->server->args(); i++) {
+    message += " " + this->server->argName(i) + ": " + this->server->arg(i) + "\n";
+  }
+  this->server->send(404, "text/plain", message);
 }
 
 void WEBServer::configureEndPoints() {
