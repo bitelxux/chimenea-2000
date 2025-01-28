@@ -31,7 +31,7 @@ void WEBServer::configureEndPoints() {
   //webServer.on(F("/stop"), HTTP_GET, stop);
   // generic endpoints
   this->server->on(F("/help"), HTTP_GET, [this]() { this->help(); });
-  //webServer.on(F("/helloWorld"), HTTP_GET, getHelloWord);
+  this->server->on(F("/helloWorld"), HTTP_GET, [this]() { this->helloWorld(); });
   //webServer.on(F("/boardID"), HTTP_GET, boardID);
   //webServer.on(F("/version"), HTTP_GET, version);
   //webServer.on(F("/uptime"), HTTP_GET, uptime);
@@ -51,19 +51,30 @@ std::string WEBServer::getClientStrIP() {
   return std::string(ipStr);
 }
 
-void WEBServer::help() {
-
+void WEBServer::log(char* msg) {
   char* buffer = new char[1024];
   std::string ipStr = this->getClientStrIP();
 
-  sprintf(buffer, "[%s] called /help endpoint", ipStr.c_str());
+  sprintf(buffer, "[%s] %s", ipStr.c_str(), msg);
   this->app->log(buffer);
+  delete[] buffer;
+}
 
+void WEBServer::helloWorld() {
+  this->log("called /helloWorld endpoint");
+  this->server->send(200, "text/json", "{\"name\": \"Hello world\"}");
+}
+
+void WEBServer::help() {
+
+  this->log("called /help endpoint");
+
+  char* buffer = new char[1024];
   sprintf(buffer, "mp3 Player) %s\n"
                   "----------------------------------------------------------------\n"
                   "\n"
                   "help: API help\n"
-                  "helloWorld: json payload test\n"
+                  "helloWorld: json payload example\n"
                   "boardID: gets board's ID\n"
                   "version: build version\n"
                   "uptime: gets uptime\n"
