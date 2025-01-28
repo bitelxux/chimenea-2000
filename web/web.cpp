@@ -32,7 +32,7 @@ void WEBServer::configureEndPoints() {
   // generic endpoints
   this->server->on(F("/help"), HTTP_GET, [this]() { this->help(); });
   this->server->on(F("/helloWorld"), HTTP_GET, [this]() { this->helloWorld(); });
-  //webServer.on(F("/boardID"), HTTP_GET, boardID);
+  this->server->on(F("/boardID"), HTTP_GET, [this]() { this->boardID(); });
   //webServer.on(F("/version"), HTTP_GET, version);
   //webServer.on(F("/uptime"), HTTP_GET, uptime);
   //webServer.on(F("/boots"), HTTP_GET, boots);
@@ -52,12 +52,17 @@ std::string WEBServer::getClientStrIP() {
 }
 
 void WEBServer::log(char* msg) {
-  char* buffer = new char[1024];
+  char buffer[1024];
   std::string ipStr = this->getClientStrIP();
-
   sprintf(buffer, "[%s] %s", ipStr.c_str(), msg);
   this->app->log(buffer);
-  delete[] buffer;
+}
+
+void WEBServer::boardID() {
+  this->log("called /boardID endpoint");
+  char buffer[20];
+  sprintf(buffer, "%s\n", BOARD_ID);
+  this->server->send(200, "text/plain", buffer);
 }
 
 void WEBServer::helloWorld() {
@@ -69,7 +74,7 @@ void WEBServer::help() {
 
   this->log("called /help endpoint");
 
-  char* buffer = new char[1024];
+  char buffer[1024];
   sprintf(buffer, "mp3 Player) %s\n"
                   "----------------------------------------------------------------\n"
                   "\n"
@@ -87,5 +92,4 @@ void WEBServer::help() {
                   "scanNetworks: info about WIFI networks\n",
           VERSION);
   this->server->send(200, "text/plain", buffer);
-  delete[] buffer; 
 }

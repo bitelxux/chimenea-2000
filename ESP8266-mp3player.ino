@@ -38,11 +38,6 @@ char server[16] = "";
 char log_server[30] = "";
 char baseURL[30] = "";
 
-void boardID() {
-  sprintf(buffer, "%s\n", BOARD_ID);
-  //webServer.send(200, "text/plain", buffer);
-}
-
 void scan_networks() {
 
   char *buffer = new char[1024];

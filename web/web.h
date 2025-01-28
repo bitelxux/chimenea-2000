@@ -11,6 +11,7 @@ class WEBServer {
 	void handleClient();
 	void help();
 	void helloWorld();
+	void boardID();
     private:
         ESP8266WebServer* server;
         App* app;
