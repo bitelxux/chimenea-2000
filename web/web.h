@@ -21,6 +21,8 @@ class WEBServer {
 	void version();
 	void uptime();
 	void boots();
+	void resetBoots();
+	void reboot();
 
         const char* webpage = R"=====(
         <!DOCTYPE html>

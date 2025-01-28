@@ -52,8 +52,8 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/version"), HTTP_GET, [this]() { this->version(); });
   this->server->on(F("/uptime"), HTTP_GET, [this]() { this->uptime(); });
   this->server->on(F("/boots"), HTTP_GET, [this]() { this->boots(); });
-  //webServer.on(F("/resetBoots"), HTTP_GET, resetBoots);
-  //webServer.on(F("/reboot"), HTTP_GET, reboot);
+  this->server->on(F("/resetBoots"), HTTP_GET, [this]() { this->resetBoots(); });
+  this->server->on(F("/reboot"), HTTP_GET, [this]() { this->reboot(); });
   //webServer.on(F("/resetWIFI"), HTTP_GET, resetWIFI);
   //webServer.on(F("/WIFISignal"), HTTP_GET, wifi_signal);
   //webServer.on(F("/scanNetworks"), HTTP_GET, scan_networks);
@@ -72,6 +72,19 @@ void WEBServer::log(char* msg) {
   std::string ipStr = this->getClientStrIP();
   sprintf(buffer, "[%s] %s", ipStr.c_str(), msg);
   this->app->log(buffer);
+}
+
+void WEBServer::reboot() {
+  this->log("called /reboot endpoint");
+  this->log("Board is going to reboot");
+  delay(2000);
+  ESP.restart();
+}
+
+void WEBServer::resetBoots() {
+  this->log("called /resetBoots endpoint");
+  this->app->resetBoots();
+  this->server->send(200, "text/plain", "boots resetted\n");
 }
 
 void WEBServer::boots() {

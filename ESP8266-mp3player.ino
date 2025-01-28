@@ -74,14 +74,6 @@ void wifi_signal() {
   //webServer.send(200, "text/plain", buffer);
 }
 
-
-void reboot() {
-  app->log("Board is going to reboot");
-  //webServer.send(200, "text/plain", "OK\n");
-  delay(2000);
-  ESP.restart();
-}
-
 int dBmtoPercentage(int dBm) {
   int quality;
   if (dBm <= RSSI_MIN) {
@@ -93,26 +85,6 @@ int dBmtoPercentage(int dBm) {
   }
 
   return quality;
-}
-
-void handleNotFound() {
-  String message = "File Not Found\n\n";
-  message += "URI: ";
-  message +=  //webServer.uri();
-    message += "\nMethod: ";
-  //message += (webServer.method() == HTTP_GET) ? "GET" : "POST";
-  message += "\nArguments: ";
-  //message += webServer.args();
-  message += "\n";
-  //for (uint8_t i = 0; i < webServer.args(); i++) {
-  //  message += " " + webServer.argName(i) + ": " + webServer.arg(i) + "\n";
-  //}
-  //webServer.send(404, "text/plain", message);
-}
-
-void resetBoots() {
-  app->resetBoots();
-  //webServer.send(200, "text/plain", "boots resetted\n");
 }
 
 void readConfigFile() {
