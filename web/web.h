@@ -23,6 +23,10 @@ class WEBServer {
 	void boots();
 	void resetBoots();
 	void reboot();
+	void resetWIFI();
+	void WIFISignal();
+	void scanNetworks();
+	void resetEEPROM();
 
         const char* webpage = R"=====(
         <!DOCTYPE html>

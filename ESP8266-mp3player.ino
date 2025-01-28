@@ -120,48 +120,10 @@ void readConfigFile() {
   }
 }
 
-void play() {
-  app->log("play");
-}
-
-void next() {
-  app->log("next");
-}
-
-void previous() {
-  app->log("previous");
-}
-
-void volumeup() {
-  app->log("volume up");
-}
-
-void volumedown() {
-  app->log("volume down");
-}
-
-void stop() {
-  app->log("stop");
-}
-
-void startWebServer() {
-  // Definir las rutas del servidor web
-  //webServer.on("/", HTTP_GET, []() {
-  //  webServer.send(200, "text/html", webpage);
-  //});
-}
-
 void setup() {
   Serial.begin(115200);
 
   app = new App(BOARD_ID, server);
-
-  /*
-  app->wifiManager->resetSettings();
-  Serial.println("Wifi reseted");
-  delay(5000);
-  return;
-  */
 
   EEPROM.begin(EEPROM_SIZE);
 

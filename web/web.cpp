@@ -54,9 +54,10 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/boots"), HTTP_GET, [this]() { this->boots(); });
   this->server->on(F("/resetBoots"), HTTP_GET, [this]() { this->resetBoots(); });
   this->server->on(F("/reboot"), HTTP_GET, [this]() { this->reboot(); });
-  //webServer.on(F("/resetWIFI"), HTTP_GET, resetWIFI);
-  //webServer.on(F("/WIFISignal"), HTTP_GET, wifi_signal);
-  //webServer.on(F("/scanNetworks"), HTTP_GET, scan_networks);
+  this->server->on(F("/resetWIFI"), HTTP_GET, [this]() { this->resetWIFI(); });
+  this->server->on(F("/WIFISignal"), HTTP_GET, [this]() { this->WIFISignal(); });
+  this->server->on(F("/scanNetworks"), HTTP_GET, [this]() { this->scanNetworks(); });
+  this->server->on(F("/resetEEPROM"), HTTP_GET, [this]() { this->resetEEPROM(); });
 }
 
 std::string WEBServer::getClientStrIP() {
@@ -72,6 +73,26 @@ void WEBServer::log(char* msg) {
   std::string ipStr = this->getClientStrIP();
   sprintf(buffer, "[%s] %s", ipStr.c_str(), msg);
   this->app->log(buffer);
+}
+
+void WEBServer::resetEEPROM() {
+  char buffer[50];
+  this->log("called /resetEEPROM endpoint");
+  int t = this->app->resetEEPROM(0, EEPROM_SIZE);
+  sprintf(buffer, "EEPROM deleted in %d milliseconds", t);
+  this->server->send(200, "test/plain", buffer);
+}
+
+void WEBServer::resetWIFI() {
+  this->log("called /resetWIFI endpoint");
+}
+
+void WEBServer::WIFISignal() {
+  this->log("called /WIFISignal endpoint");
+}
+
+void WEBServer::scanNetworks() {
+  this->log("called /scanNetworks endpoint");
 }
 
 void WEBServer::reboot() {
@@ -136,7 +157,7 @@ void WEBServer::help() {
                   "boots: number of boots so long\n"
                   "resetBoots: resets number of boots to 0\n"
                   "reboot: reboots the board\n"
-                  "resetEEPROM: clears all info in EEPROM, including local readings.\n"
+                  "resetEEPROM: clears all info in EEPROM\n"
                   "resetWIFI: deletes WIFI known networks\n"
                   "WIFISignal: WIFI RSSI\n"
                   "scanNetworks: info about WIFI networks\n",
