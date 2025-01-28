@@ -69,10 +69,7 @@ std::string WEBServer::getClientStrIP() {
 }
 
 void WEBServer::log(char* msg) {
-  char buffer[1024];
-  std::string ipStr = this->getClientStrIP();
-  sprintf(buffer, "[%s] %s", ipStr.c_str(), msg);
-  this->app->log(buffer);
+  this->app->log(msg);
 }
 
 void WEBServer::resetEEPROM() {
