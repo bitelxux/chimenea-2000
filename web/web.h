@@ -11,7 +11,7 @@ class WEBServer {
     private:
         ESP8266WebServer* server;
         App* app;
-        std::string getClientStrIP();
+        String getClientStrIP();
         void log(char* msg);
 	void configureEndPoints();
 	void handleNotFound();

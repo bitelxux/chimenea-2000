@@ -60,16 +60,19 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/resetEEPROM"), HTTP_GET, [this]() { this->resetEEPROM(); });
 }
 
-std::string WEBServer::getClientStrIP() {
+String WEBServer::getClientStrIP() {
   IPAddress clientIP = this->server->client().remoteIP();
   char ipStr[16];
 
   sprintf(ipStr, "%d.%d.%d.%d", clientIP[0], clientIP[1], clientIP[2], clientIP[3]);
-  return std::string(ipStr);
+  return String(ipStr);
 }
 
 void WEBServer::log(char* msg) {
-  this->app->log(msg);
+  String clientIP = this->getClientStrIP();
+  char buffer[1024];
+  sprintf(buffer, "%s %s", clientIP.c_str(), msg);
+  this->app->log(buffer);
 }
 
 void WEBServer::resetEEPROM() {
@@ -144,7 +147,7 @@ void WEBServer::help() {
   this->log("called /help endpoint");
 
   char buffer[1024];
-  sprintf(buffer, "mp3 Player) %s\n"
+  sprintf(buffer, "chimenea-2000 %s\n"
                   "----------------------------------------------------------------\n"
                   "\n"
                   "help: API help\n"
