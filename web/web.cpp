@@ -76,7 +76,7 @@ void WEBServer::resetEEPROM() {
   char buffer[50];
   this->log("called /resetEEPROM endpoint");
   int t = this->app->resetEEPROM(0, EEPROM_SIZE);
-  sprintf(buffer, "EEPROM deleted in %d milliseconds", t);
+  sprintf(buffer, "EEPROM deleted in %d milliseconds\n", t);
   this->server->send(200, "test/plain", buffer);
 }
 
@@ -95,6 +95,7 @@ void WEBServer::scanNetworks() {
 void WEBServer::reboot() {
   this->log("called /reboot endpoint");
   this->log("Board is going to reboot");
+  this->server->send(200, "test/plain", "OK\n");
   delay(2000);
   ESP.restart();
 }
