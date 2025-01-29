@@ -39,12 +39,12 @@ void WEBServer::handleNotFound() {
 
 void WEBServer::configureEndPoints() {
   // specific webpoints
-  //webServer.on(F("/next"), HTTP_GET, next);
-  //webServer.on(F("/previous"), HTTP_GET, previous);
-  //webServer.on(F("/play"), HTTP_GET, play);
-  //webServer.on(F("/volumeup"), HTTP_GET, volumeup);
-  //webServer.on(F("/volumedown"), HTTP_GET, volumedown);
-  //webServer.on(F("/stop"), HTTP_GET, stop);
+  this->server->on(F("/play"), HTTP_GET, [this]() { this->play(); });
+  this->server->on(F("/stop"), HTTP_GET, [this]() { this->stop(); });
+  this->server->on(F("/next"), HTTP_GET, [this]() { this->next(); });
+  this->server->on(F("/previous"), HTTP_GET, [this]() { this->previous(); });
+  this->server->on(F("/volume_up"), HTTP_GET, [this]() { this->volume_up(); });
+  this->server->on(F("/volume_down"), HTTP_GET, [this]() { this->volume_down(); });
   // generic endpoints
   this->server->on(F("/help"), HTTP_GET, [this]() { this->help(); });
   this->server->on(F("/helloWorld"), HTTP_GET, [this]() { this->helloWorld(); });
@@ -83,16 +83,49 @@ void WEBServer::resetEEPROM() {
   this->server->send(200, "test/plain", buffer);
 }
 
+void WEBServer::play() {
+  this->log("called /play endpoint");
+  this->server->send(200, "test/plain", "OK\n");
+}
+
+void WEBServer::stop() {
+  this->log("called /stop endpoint");
+  this->server->send(200, "test/plain", "OK\n");
+}
+
+void WEBServer::next() {
+  this->log("called /next endpoint");
+  this->server->send(200, "test/plain", "OK\n");
+}
+
+void WEBServer::previous() {
+  this->log("called /previous endpoint");
+  this->server->send(200, "test/plain", "OK\n");
+}
+
+void WEBServer::volume_up() {
+  this->log("called /volume_up endpoint");
+  this->server->send(200, "test/plain", "OK\n");
+}
+
+void WEBServer::volume_down() {
+  this->log("called /volume_down endpoint");
+  this->server->send(200, "test/plain", "OK\n");
+}
+
 void WEBServer::resetWIFI() {
   this->log("called /resetWIFI endpoint");
+  this->server->send(200, "test/plain", "OK\n");
 }
 
 void WEBServer::WIFISignal() {
   this->log("called /WIFISignal endpoint");
+  this->server->send(200, "test/plain", "OK\n");
 }
 
 void WEBServer::scanNetworks() {
   this->log("called /scanNetworks endpoint");
+  this->server->send(200, "test/plain", "OK\n");
 }
 
 void WEBServer::reboot() {

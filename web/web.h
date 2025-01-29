@@ -27,6 +27,12 @@ class WEBServer {
 	void WIFISignal();
 	void scanNetworks();
 	void resetEEPROM();
+    void play();
+    void next();
+    void previous();
+    void volume_up();
+    void volume_down();
+    void stop();
 
         const char* webpage = R"=====(
         <!DOCTYPE html>
