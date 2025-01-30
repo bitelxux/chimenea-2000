@@ -121,6 +121,10 @@ void readConfigFile() {
 }
 
 void setup() {
+
+  pinMode(BUSY_PIN, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+
   Serial.begin(115200);
 
   app = new App(BOARD_ID, server);
@@ -183,4 +187,6 @@ void _resetWifi() {
 void loop() {
   app->attendTimers();
   webServer->handleClient();
+  // BUSY_PIN is LOW when FDF is playing
+  digitalWrite(LED, !digitalRead(BUSY_PIN));
 }

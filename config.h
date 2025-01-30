@@ -6,7 +6,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea-2000"
-#define VERSION "20250129.217"
+#define VERSION "20250130.220"
 
 //EEPROM
 #define EEPROM_SIZE 4096
@@ -16,4 +16,9 @@
 
 // WiFiManager parameteres
 #define SERVER_LABEL "SERVER_IP"
+
+// BOARD
+#define BUSY_PIN 10
+#define LED 12
+
 
