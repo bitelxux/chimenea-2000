@@ -1,38 +1,43 @@
 #include <string>
 
 #include <ESP8266WebServer.h>
+#include <DFRobotDFPlayerMini.h>
+
 #include "btlx25.h"
 
 class WEBServer {
     public:
         WEBServer(App* app);
         void start();
-	void handleClient();
+	    void handleClient();
+        void registerPlayer(DFRobotDFPlayerMini* player);
     private:
-        ESP8266WebServer* server;
-        App* app;
+        DFRobotDFPlayerMini* player = NULL;
+
+        ESP8266WebServer* server = NULL;
+        App* app = NULL;
         String getClientStrIP();
         void log(char* msg);
-	void configureEndPoints();
-	void handleNotFound();
-	void help();
-	void helloWorld();
-	void boardID();
-	void version();
-	void uptime();
-	void boots();
-	void resetBoots();
-	void reboot();
-	void resetWIFI();
-	void WIFISignal();
-	void scanNetworks();
-	void resetEEPROM();
-    void play();
-    void next();
-    void previous();
-    void volume_up();
-    void volume_down();
-    void stop();
+    	void configureEndPoints();
+    	void handleNotFound();
+    	void help();
+    	void helloWorld();
+    	void boardID();
+    	void version();
+    	void uptime();
+    	void boots();
+    	void resetBoots();
+    	void reboot();
+    	void resetWIFI();
+    	void WIFISignal();
+    	void scanNetworks();
+    	void resetEEPROM();
+        void play();
+        void next();
+        void previous();
+        void volumeup();
+        void volumedown();
+        void stop();
 
         const char* webpage = R"=====(
         <!DOCTYPE html>

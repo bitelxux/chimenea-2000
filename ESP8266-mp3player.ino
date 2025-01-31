@@ -1,6 +1,8 @@
 //Libraries
 #include <FS.h>
 #include <ArduinoJson.h>  // 5.13.5 !!
+#include <SoftwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
 
 #include "config.h"
 
@@ -37,6 +39,9 @@ WEBServer *webServer = NULL;
 char server[16] = "";
 char log_server[30] = "";
 char baseURL[30] = "";
+
+SoftwareSerial dfSerial(4, 5, false);
+DFRobotDFPlayerMini dfPlayer;
 
 void scan_networks() {
 
@@ -126,6 +131,22 @@ void setup() {
   pinMode(LED, OUTPUT);
 
   Serial.begin(115200);
+  dfSerial.begin(9600);
+
+  Serial.println('\n\n');
+
+  // FDF setup
+  if (!dfPlayer.begin(dfSerial)) {
+      Serial.println("DFPlayer Mini not detected! Rebooting board");
+      while(true);
+  }
+  else {
+      Serial.println("DFPlayer found!");
+      dfPlayer.volume(30);
+      dfPlayer.play(1);
+  }
+
+  delay(1000);
 
   app = new App(BOARD_ID, server);
 
@@ -163,12 +184,13 @@ void setup() {
     //end save
   }
 
-  webServer = new WEBServer(app);
-  webServer->start();
-
   unsigned short boots = app->incBoots();
   sprintf(buffer, "boot: %d", boots);
   app->log(buffer);
+
+  webServer = new WEBServer(app);
+  webServer->registerPlayer(&dfPlayer);
+  webServer->start();
 }
 
 void resetWIFI() {
@@ -188,5 +210,6 @@ void loop() {
   app->attendTimers();
   webServer->handleClient();
   // BUSY_PIN is LOW when FDF is playing
+  int playing = !digitalRead(BUSY_PIN);
   digitalWrite(LED, !digitalRead(BUSY_PIN));
 }

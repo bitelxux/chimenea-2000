@@ -2,7 +2,7 @@
 # and copy the tools directory to /home/<usr>/Arduino
 
 name:=ESP8266-mp3player.ino
-port:=/dev/ttyUSB0
+port:=/dev/ttyUSB1
 ip:=192.168.1.191
 
 all: clean build upload

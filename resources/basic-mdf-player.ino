@@ -4,7 +4,7 @@
 #define BUSY_PIN 10
 #define LED 12
 
-SoftwareSerial mySerial(5, 4, false);
+SoftwareSerial mySerial(4, 5, false);
 DFRobotDFPlayerMini myDFPlayer;
 
 void setup() {
