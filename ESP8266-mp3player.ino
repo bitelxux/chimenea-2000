@@ -8,10 +8,10 @@
 
 // tried many approaches to #include "btlx25/btlx25.h"
 // non worked. Workaround is to symlink the btlx25 folder to Arduino/libraries
-#include "btlx25.h"
+#include <btlx25.h>
 
 // html page for mp3 management
-#include "web.h"
+#include <web.h>
 
 // Reset Button
 #define RESET_BUTTON 14
