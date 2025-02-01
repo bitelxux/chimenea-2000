@@ -16,7 +16,7 @@ class WEBServer {
 	    void handleClient();
         void registerPlayer(Player* player);
     private:
-        DFRobotDFPlayerMini* player = NULL;
+        Player* player = NULL;
 
         ESP8266WebServer* server = NULL;
         App* app = NULL;
@@ -41,6 +41,7 @@ class WEBServer {
         void previous();
         void volumeup();
         void volumedown();
+        void track();
         void stop();
 
         const char* webpage = R"=====(

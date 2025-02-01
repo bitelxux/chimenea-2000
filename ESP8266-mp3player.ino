@@ -149,12 +149,8 @@ void setup() {
 
   delay(1000);
 
-  Serial.println('creating app');
   app = new App(BOARD_ID, server);
-  Serial.println('app created');
-  Serial.println("Creating player");
   player = new Player(app);
-  Serial.println("Player created");
 
   EEPROM.begin(EEPROM_SIZE);
 
@@ -215,7 +211,5 @@ void _resetWifi() {
 void loop() {
   app->attendTimers();
   webServer->handleClient();
-  // BUSY_PIN is LOW when FDF is playing
-  int playing = !digitalRead(BUSY_PIN);
-  digitalWrite(LED, !digitalRead(BUSY_PIN));
+  player->handle();
 }

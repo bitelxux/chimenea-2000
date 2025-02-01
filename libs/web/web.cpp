@@ -53,6 +53,7 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/previous"), HTTP_GET, [this]() { this->previous(); });
   this->server->on(F("/volumeup"), HTTP_GET, [this]() { this->volumeup(); });
   this->server->on(F("/volumedown"), HTTP_GET, [this]() { this->volumedown(); });
+  this->server->on(F("/track"), HTTP_GET, [this]() { this->track(); });
   // generic endpoints
   this->server->on(F("/help"), HTTP_GET, [this]() { this->help(); });
   this->server->on(F("/helloWorld"), HTTP_GET, [this]() { this->helloWorld(); });
@@ -93,7 +94,7 @@ void WEBServer::resetEEPROM() {
 
 void WEBServer::play() {
   this->log("called /play endpoint");
-  this->player->play(1);
+  this->player->play();
   this->server->sendHeader("Connection", "close");
   this->server->send(200, "text/plain", "OK\n");
 }
@@ -108,11 +109,13 @@ void WEBServer::stop() {
 void WEBServer::next() {
   this->log("called /next endpoint");
   this->player->next();
+  this->server->sendHeader("Connection", "close");
   this->server->send(200, "text/plain", "OK\n");
 }
 
 void WEBServer::previous() {
   this->log("called /previous endpoint");
+  this->player->previous();
   this->server->sendHeader("Connection", "close");
   this->server->send(200, "text/plain", "OK\n");
 }
@@ -135,6 +138,15 @@ void WEBServer::volumedown() {
   }
   this->server->sendHeader("Connection", "close");
   this->server->send(200, "text/plain", "OK\n");
+}
+
+void WEBServer::track() {
+  this->log("called /track endpoint");
+  int track = this->player->readCurrentFileNumber();
+  char buffer[5];
+  sprintf(buffer, "%d\n", track);
+  this->server->sendHeader("Connection", "close");
+  this->server->send(200, "text/plain", buffer);
 }
 
 void WEBServer::resetWIFI() {

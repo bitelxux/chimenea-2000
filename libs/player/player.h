@@ -12,10 +12,18 @@
 class Player: public DFRobotDFPlayerMini {
     public:
         Player(App* app);
+		void handle();
+		void setStopped(bool value);
+		bool getStopped();
+		void play(int track=0);
+		void stop();
+		void next();
+		void previous();
     private:
         App* app;
         boolean bStopped;
-	    unsigned short volume;
+		unsigned int trackNumber;
+		unsigned int totalFiles;
 };      
 
 #endif
