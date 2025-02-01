@@ -13,15 +13,13 @@ class Player: public DFRobotDFPlayerMini {
     public:
         Player(App* app);
 		void handle();
-		void setStopped(bool value);
-		bool getStopped();
 		void play(int track=0);
 		void stop();
 		void next();
 		void previous();
+		unsigned int track();
     private:
         App* app;
-        boolean bStopped;
 		unsigned int trackNumber;
 		unsigned int totalFiles;
 };      

@@ -5,7 +5,6 @@ SoftwareSerial serial(RX, TX, false);
 
 Player::Player(App* app) {
     this->app = app;
-    this->bStopped = false;
     this->trackNumber = 1;
     this->totalFiles = 0;
 
@@ -23,8 +22,12 @@ Player::Player(App* app) {
         sprintf(buffer, "DPPlayer found [%d tracks]", this->totalFiles);
         this->app->log(buffer);
         this->volume(30);
-        this->loop(this->trackNumber);
+        this->play(this->trackNumber);
     }
+}
+
+unsigned int Player::track() {
+    return this->trackNumber;
 }
 
 void Player::play(int track) {
@@ -33,12 +36,10 @@ void Player::play(int track) {
     char buffer[50];
     sprintf(buffer, "Playing track %d", track);
     this->app->log(buffer);
-    this->bStopped = false;
 }
 
 void Player::stop() {
     DFRobotDFPlayerMini::stop();
-    this->bStopped = true;
 }
 
 void Player::next() {
@@ -67,14 +68,6 @@ void Player::previous() {
         this->trackNumber = this->totalFiles;
     }
     this->play(this->trackNumber);
-}
-
-void Player::setStopped(bool value) {
-    this->bStopped = value;
-}
-
-bool Player::getStopped() {
-    return this->bStopped;
 }
 
 void Player::handle() {

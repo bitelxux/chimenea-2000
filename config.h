@@ -6,7 +6,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea-2000"
-#define VERSION "20250201.362"
+#define VERSION "20250201.370"
 
 //EEPROM
 #define EEPROM_SIZE 4096

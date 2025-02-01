@@ -142,9 +142,9 @@ void WEBServer::volumedown() {
 
 void WEBServer::track() {
   this->log("called /track endpoint");
-  int track = this->player->readCurrentFileNumber();
-  char buffer[5];
-  sprintf(buffer, "%d\n", track);
+  unsigned int track = this->player->track();
+  char buffer[10];
+  sprintf(buffer, "%d", track);
   this->server->sendHeader("Connection", "close");
   this->server->send(200, "text/plain", buffer);
 }
