@@ -1,38 +1,24 @@
-#include "player.h"
+#include <player.h>
+#include "../../config.h"
+
+SoftwareSerial serial(4, 5, false);
 
 Player::Player(App* app) {
     this->app = app;
-}
+    this->bStopped = false;
+    //this->app->log("This is the player");
 
-void Player::begin(SoftwareSerial serial) {
-    if (!this->dfPlayer.begin(serial)) {
-        this->app->log("Player not found");
+    Serial.println("starting serial");
+    serial.begin(9600);
+    Serial.println("serial started");
+
+    if (!this->begin(serial)) {
+        Serial.println("DFPlayer Mini not detected! Rebooting board");
+        while(true);
     }
-
-    this->dfPlayer.volume(this->volume);
+    else {
+        Serial.println("DFPlayer found!");
+        //this->volume(30);
+        //this->play(1);
+    }
 }
-
-void Player::play(int track) {
-    this->dfPlayer.play(track);
-}
-
-void Player::stop() {
-    this->dfPlayer.stop();
-}
-
-void Player::next() {
-    this->dfPlayer.next();
-}
-
-void Player::previous() {
-    this->dfPlayer.previous();
-}
-
-void Player::volumeup() {
-    this->dfPlayer.volumeUp();
-}
-
-void Player::volumedown() {
-    this->dfPlayer.volumeDown();
-}
-

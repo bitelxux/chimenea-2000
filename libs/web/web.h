@@ -1,16 +1,20 @@
+#ifndef web_h
+#define web_h
+
 #include <string>
 
 #include <ESP8266WebServer.h>
 #include <DFRobotDFPlayerMini.h>
 
 #include <btlx25.h>
+#include <player.h>
 
 class WEBServer {
     public:
         WEBServer(App* app);
         void start();
 	    void handleClient();
-        void registerPlayer(DFRobotDFPlayerMini* player);
+        void registerPlayer(Player* player);
     private:
         DFRobotDFPlayerMini* player = NULL;
 
@@ -129,3 +133,5 @@ class WEBServer {
         </html>
         )=====";
 };      
+
+#endif

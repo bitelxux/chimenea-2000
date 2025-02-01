@@ -10,8 +10,8 @@
 // non worked. Workaround is to symlink the btlx25 folder to Arduino/libraries
 #include <btlx25.h>
 
-// html page for mp3 management
 #include <web.h>
+#include <player.h>
 
 // Reset Button
 #define RESET_BUTTON 14
@@ -20,6 +20,8 @@ int rb_required_time = 3;
 boolean time_to_reset = false;
 
 App *app = NULL;
+Player *player = NULL;
+WEBServer *webServer = NULL;
 
 //flag for saving data
 bool shouldSaveConfig = false;
@@ -32,16 +34,14 @@ void saveConfigCallback() {
 
 char buffer[200];
 
-WEBServer *webServer = NULL;
-
 // This values  will depend on what the user configures
 // on the  WifiManager on the first connection
 char server[16] = "";
 char log_server[30] = "";
 char baseURL[30] = "";
 
-SoftwareSerial dfSerial(4, 5, false);
-DFRobotDFPlayerMini dfPlayer;
+//SoftwareSerial dfSerial(4, 5, false);
+// DFRobotDFPlayerMini dfPlayer;
 
 void scan_networks() {
 
@@ -131,24 +131,30 @@ void setup() {
   pinMode(LED, OUTPUT);
 
   Serial.begin(115200);
-  dfSerial.begin(9600);
+  //dfSerial.begin(9600);
 
   Serial.println('\n\n');
+  Serial.println('PROGRAM STARTING');
 
-  // FDF setup
-  if (!dfPlayer.begin(dfSerial)) {
-      Serial.println("DFPlayer Mini not detected! Rebooting board");
-      while(true);
-  }
-  else {
-      Serial.println("DFPlayer found!");
-      dfPlayer.volume(30);
-      dfPlayer.play(1);
-  }
+  //// FDF setup
+  //if (!dfPlayer.begin(dfSerial)) {
+  //    Serial.println("DFPlayer Mini not detected! Rebooting board");
+  //    while(true);
+  //}
+  //else {
+  //    Serial.println("DFPlayer found!");
+  //    dfPlayer.volume(30);
+  //    dfPlayer.play(1);
+  //}
 
   delay(1000);
 
+  Serial.println('creating app');
   app = new App(BOARD_ID, server);
+  Serial.println('app created');
+  Serial.println("Creating player");
+  player = new Player(app);
+  Serial.println("Player created");
 
   EEPROM.begin(EEPROM_SIZE);
 
@@ -189,7 +195,7 @@ void setup() {
   app->log(buffer);
 
   webServer = new WEBServer(app);
-  webServer->registerPlayer(&dfPlayer);
+  webServer->registerPlayer(player);
   webServer->start();
 }
 

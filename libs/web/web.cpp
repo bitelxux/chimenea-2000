@@ -10,7 +10,7 @@ WEBServer::WEBServer(App* app) {
     this->app = app;
 }
 
-void WEBServer::registerPlayer(DFRobotDFPlayerMini* player) {
+void WEBServer::registerPlayer(Player* player) {
   this->app->log("mp3 player registered in webserver");
   this->player = player;
   this->player->volume(30);

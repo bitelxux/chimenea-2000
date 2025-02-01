@@ -1,23 +1,21 @@
+#ifndef player_h
+#define player_h
+
 #include <string>
-#include <DFRobotDFPlayerMini.h>
+
+#include <ESP8266WebServer.h>
 #include <SoftwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
 
-#include "../config.h"
-#include "btlx25.h"
+#include <btlx25.h>
 
-class Player {
+class Player: public DFRobotDFPlayerMini {
     public:
         Player(App* app);
-        void begin(SoftwareSerial serial);
-	void play(int track);
-	void stop();
-	void next();
-	void previous();
-	void volumeup();
-	void volumedown();
     private:
-        App* app = NULL;
-	DFRobotDFPlayerMini dfPlayer;
-        boolean bStopped = false;
-	unsigned short volume = 30;
+        App* app;
+        boolean bStopped;
+	    unsigned short volume;
 };      
+
+#endif
