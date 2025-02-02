@@ -4,76 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chimenea-2000</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f9;
-    }
-    h1 {
-        margin: 20px;
-        font-size: 2rem;
-        color: #333;
-    }
-    .button-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-    button {
-        padding: 15px;
-        font-size: 1.5rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        background-color: #007bff;
-        color: #fff;
-        transition: background-color 0.3s;
-    }
-    button:hover {
-        background-color: #0056b3;
-    }
-    button:active {
-        background-color: #0056b3; /* Aseguramos que el color sea consistente mientras se presiona */
-        transition: none; /* Opcional: elimina la animación en este estado */
-    }
-    .wide {
-        grid-column: span 3;
-    }
-</style>
-<script>
-    // Esto asegura que el botón vuelva a su color original en dispositivos táctiles
-    document.addEventListener('touchstart', function (event) {
-        if (event.target.tagName === 'BUTTON') {
-            const button = event.target;
-            button.style.backgroundColor = '#0056b3'; // Color al presionar
-            setTimeout(() => {
-                button.style.backgroundColor = '#007bff'; // Color original
-            }, 400); // Retorno al color original tras 200ms
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
         }
-    }, { passive: true });
-</script>
-</head>
-<body>
-    <h1>Chimenea-2000</h1>
-    <div class="button-container">
-        <button onclick="sendCommand('previous')"><<</button>
-        <button onclick="sendCommand('play')">▶</button>
-        <button onclick="sendCommand('next')">>></button>
-        <button class="wide" onclick="sendCommand('volumeup')">Volume ↑</button>
-        <button class="wide" onclick="sendCommand('volumedown')">Volume ↓</button>
-        <button class="wide" onclick="sendCommand('stop')">■ Stop</button>
-    </div>
+        h1 {
+            margin: 20px;
+            font-size: 2rem;
+            color: #333;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        button {
+            padding: 15px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:active {
+            background-color: #0056b3;
+            transition: none;
+        }
+        .wide {
+            grid-column: span 3;
+        }
+
+        /* Estilo para el círculo con el valor */
+        #track-value {
+            position: fixed;
+            bottom: 20px; /* Alineado abajo */
+            right: 20px; /* Alineado a la derecha */
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Ajuste de separación entre las hileras de botones */
+        .button-container + .button-container {
+            margin-top: 10px; /* Separación entre la fila de navegación y la fila de volumen/stop */
+        }
+    </style>
     <script>
+        // Esta función actualiza el valor mostrado en el círculo de la pista
+        function updateTrackValue() {
+            fetch('/track')  // Endpoint cambiado a '/track'
+                .then(response => response.json())  // Asumimos que la respuesta es JSON
+                .then(data => {
+                    // Aquí actualizas el contenido del círculo
+                    document.getElementById('track-value').innerText = data.value;
+                })
+                .catch(error => {
+                    console.error('Error al obtener el valor de la pista:', error);
+                });
+        }
+
+        // Llamada inicial para obtener el valor de la variable al cargar la página
+        window.onload = updateTrackValue;
+
+        // Llamamos a la función para actualizar el valor cuando se presiona un botón
         function sendCommand(command) {
             fetch(`/${command}`)
                 .then(response => {
                     if (response.ok) {
                         console.log(`${command} command sent successfully`);
+                        updateTrackValue(); // Actualiza el valor después de enviar el comando
                     } else {
                         console.error(`Failed to send ${command} command`);
                     }
@@ -83,6 +100,28 @@
                 });
         }
     </script>
+</head>
+<body>
+    <h1>Chimenea-2000</h1>
+
+    <!-- Contenedor de botones de navegación -->
+    <div class="button-container">
+        <button onclick="sendCommand('previous')"><<</button>
+        <button onclick="sendCommand('play')">▶</button>
+        <button onclick="sendCommand('next')">>></button>
+    </div>
+
+    <!-- Contenedor de botones de volumen y stop con separación vertical adecuada -->
+    <div class="button-container">
+        <button class="wide" onclick="sendCommand('volumeup')">Volume ↑</button>
+        <button class="wide" onclick="sendCommand('volumedown')">Volume ↓</button>
+        <button class="wide" onclick="sendCommand('stop')">■ Stop</button>
+    </div>
+
+    <!-- Círculo para mostrar el valor de la pista, en la parte inferior derecha -->
+    <div id="track-value">
+        0
+    </div>
 </body>
 </html>
 
