@@ -1,3 +1,5 @@
+
+
 //Libraries
 #include <FS.h>
 #include <ArduinoJson.h>  // 5.13.5 !!
@@ -6,7 +8,7 @@
 
 #include "config.h"
 
-// tried many approaches to #include "btlx25/btlx25.h"
+// tried many approaches to #include "btlx25/btlx25.h"b
 // non worked. Workaround is to symlink the btlx25 folder to Arduino/libraries
 #include <btlx25.h>
 
@@ -131,28 +133,19 @@ void setup() {
   pinMode(LED, OUTPUT);
 
   Serial.begin(115200);
-  //dfSerial.begin(9600);
 
   Serial.println('\n\n');
   Serial.println('PROGRAM STARTING');
 
-  //// FDF setup
-  //if (!dfPlayer.begin(dfSerial)) {
-  //    Serial.println("DFPlayer Mini not detected! Rebooting board");
-  //    while(true);
-  //}
-  //else {
-  //    Serial.println("DFPlayer found!");
-  //    dfPlayer.volume(30);
-  //    dfPlayer.play(1);
-  //}
-
   delay(1000);
 
-  app = new App(BOARD_ID, server);
-  player = new Player(app);
-
   EEPROM.begin(EEPROM_SIZE);
+
+  app = new App(BOARD_ID, server);
+
+  unsigned short boots = app->incBoots();
+  sprintf(buffer, "boot: %d", boots);
+  app->log(buffer);
 
   readConfigFile();
   WiFiManagerParameter pserver(SERVER_LABEL, "Server IP", server, 16);
@@ -165,9 +158,10 @@ void setup() {
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
-
+  
   Serial.println("Connected to WiFi");
-
+  player = new Player(app);
+  
   //save the custom parameters to FS
   if (shouldSaveConfig) {
     Serial.println("saving config");
@@ -186,10 +180,6 @@ void setup() {
     //end save
   }
 
-  unsigned short boots = app->incBoots();
-  sprintf(buffer, "boot: %d", boots);
-  app->log(buffer);
-
   webServer = new WEBServer(app);
   webServer->registerPlayer(player);
   webServer->start();
@@ -198,7 +188,6 @@ void setup() {
 void resetWIFI() {
   sprintf(buffer, "WIFI networks will be reset and board rebooted NOW");
   app->log(buffer);
-  //webServer.send(200, "text/plain", buffer);
   _resetWifi();
 }
 

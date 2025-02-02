@@ -5,7 +5,7 @@ name:=ESP8266-mp3player.ino
 board:=generic
 #board:=nodemcu
 port:=$USB_PORT
-ip:=192.168.1.191
+ip:=192.168.1.236
 
 all: clean build upload
 usb: clean build upload_usb

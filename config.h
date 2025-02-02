@@ -6,10 +6,10 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea-2000"
-#define VERSION "20250201.370"
+#define VERSION "20250202.389"
 
 //EEPROM
-#define EEPROM_SIZE 4096
+#define EEPROM_SIZE 1024
 
 #define RSSI_MAX -50   // maximum strength of signal in dBm
 #define RSSI_MIN -100  // minimum strength of signal in dBm

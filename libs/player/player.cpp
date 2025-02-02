@@ -13,15 +13,17 @@ Player::Player(App* app) {
     Serial.println("serial started");
 
     if (!this->begin(serial)) {
-        this->app->log("DFPlayer Mini not detected! Rebooting board");
+        //this->app->log("DFPlayer Mini not detected! Rebooting board");
+        Serial.println("DFPlayer Mini not detected! Rebooting board");
         while(true);
     }
     else {
         this->totalFiles = this->readFileCounts();
         char buffer[100];
         sprintf(buffer, "DPPlayer found [%d tracks]", this->totalFiles);
-        this->app->log(buffer);
-        this->volume(30);
+	Serial.println(buffer);
+        //this->app->log(buffer);
+        this->volume(10);
         this->play(this->trackNumber);
     }
 }

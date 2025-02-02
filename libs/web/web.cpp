@@ -13,7 +13,7 @@ WEBServer::WEBServer(App* app) {
 void WEBServer::registerPlayer(Player* player) {
   this->app->log("mp3 player registered in webserver");
   this->player = player;
-  this->player->volume(30);
+  this->player->volume(10);
 }
 
 void WEBServer::start() {
