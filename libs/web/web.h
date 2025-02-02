@@ -23,6 +23,7 @@ class WEBServer {
         String getClientStrIP();
         void log(char* msg);
     	void configureEndPoints();
+    	void handleRoot();
     	void handleNotFound();
     	void help();
     	void helloWorld();
@@ -44,6 +45,8 @@ class WEBServer {
         void track();
         void stop();
 
+	// Not used, served from LittleFS now
+	// index.html at /data
         const char* webpage = R"=====(
         <!DOCTYPE html>
         <html lang="en">

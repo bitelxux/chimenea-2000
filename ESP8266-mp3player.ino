@@ -2,6 +2,7 @@
 
 //Libraries
 #include <FS.h>
+#include <LittleFS.h>
 #include <ArduinoJson.h>  // 5.13.5 !!
 #include <SoftwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
@@ -94,6 +95,7 @@ int dBmtoPercentage(int dBm) {
   return quality;
 }
 
+
 void readConfigFile() {
   Serial.println("mounting FS...");
   strcpy(server, "");
@@ -139,19 +141,24 @@ void setup() {
 
   delay(1000);
 
+  if (!LittleFS.begin()) {
+        app->log("LittleFS mount failed");
+        ESP.restart();
+  }
+
   EEPROM.begin(EEPROM_SIZE);
 
   app = new App(BOARD_ID, server);
 
   unsigned short boots = app->incBoots();
-  sprintf(buffer, "boot: %d", boots);
+  sprintf(buffer, "boot: %d\n", boots);
   app->log(buffer);
 
-  readConfigFile();
-  WiFiManagerParameter pserver(SERVER_LABEL, "Server IP", server, 16);
+  //readConfigFile();
+  //WiFiManagerParameter pserver(SERVER_LABEL, "Server IP", server, 16);
 
   //set config save notify callback
-  app->wifiManager->setSaveConfigCallback(saveConfigCallback);
+  //app->wifiManager->setSaveConfigCallback(saveConfigCallback);
 
   while (WiFi.status() != WL_CONNECTED) {
     app->startWiFiManager();
@@ -163,6 +170,7 @@ void setup() {
   player = new Player(app);
   
   //save the custom parameters to FS
+  /*
   if (shouldSaveConfig) {
     Serial.println("saving config");
     DynamicJsonBuffer jsonBuffer;
@@ -179,6 +187,7 @@ void setup() {
     configFile.close();
     //end save
   }
+  */
 
   webServer = new WEBServer(app);
   webServer->registerPlayer(player);

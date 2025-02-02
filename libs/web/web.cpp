@@ -1,9 +1,10 @@
 #include <string>
+#include <LittleFS.h>
 
 #include <web.h>
 #include "../../config.h"
 
-int volume = 30;
+int volume = 10;
 
 WEBServer::WEBServer(App* app) {
     this->server = new ESP8266WebServer(80);
@@ -13,12 +14,22 @@ WEBServer::WEBServer(App* app) {
 void WEBServer::registerPlayer(Player* player) {
   this->app->log("mp3 player registered in webserver");
   this->player = player;
-  this->player->volume(10);
+  this->player->volume(volume);
 }
+
+void WEBServer::handleRoot() {
+  File file = LittleFS.open("/index.html", "r"); // Open the file
+  if (!file) {
+    this->server->send(404, "text/plain", "File Not Found!");
+    return;
+  }
+  this->server->streamFile(file, "text/html"); // Serve the file
+  file.close();
+}  
 
 void WEBServer::start() {
     this->server->on("/", HTTP_GET, [this]() {
-        this->server->send(200, "text/html", this->webpage);
+       this->handleRoot();
     });
 
     this->configureEndPoints();
