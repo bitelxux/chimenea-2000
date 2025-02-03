@@ -8,6 +8,9 @@ int volume = 10;
 
 WEBServer::WEBServer(App* app) {
     this->server = new ESP8266WebServer(80);
+    // This servStatic does not work
+    // Serving file on /chimenesa.png instead
+    // his->server->serveStatic("/chimenea.png", LittleFS, "/chimenea.png");
     this->app = app;
 }
 
@@ -66,6 +69,8 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/volumedown"), HTTP_GET, [this]() { this->volumedown(); });
   this->server->on(F("/track"), HTTP_GET, [this]() { this->track(); });
   this->server->on(F("/readVolume"), HTTP_GET, [this]() { this->readVolume(); });
+  // When a file is big, staticServe crashes. The workound is to serv it as stream
+  this->server->on(F("/chimenea.png"), HTTP_GET, [this]() { this->chimenea(); });
   // generic endpoints
   this->server->on(F("/help"), HTTP_GET, [this]() { this->help(); });
   this->server->on(F("/helloWorld"), HTTP_GET, [this]() { this->helloWorld(); });
@@ -89,6 +94,7 @@ String WEBServer::getClientStrIP() {
   return String(ipStr);
 }
 
+
 void WEBServer::log(char* msg) {
   String clientIP = this->getClientStrIP();
   char buffer[1024];
@@ -102,6 +108,17 @@ void WEBServer::resetEEPROM() {
   int t = this->app->resetEEPROM(0, EEPROM_SIZE);
   sprintf(buffer, "EEPROM deleted in %d milliseconds\n", t);
   this->server->send(200, "text/plain", buffer);
+}
+
+void WEBServer::chimenea() {
+    File file = LittleFS.open("/chimenea.png", "r");
+    if (!file) {
+        this->server->send(404, "text/plain", "File Not Found");
+        return;
+    }
+    
+    this->server->streamFile(file, "image/png");
+    file.close();
 }
 
 void WEBServer::play() {

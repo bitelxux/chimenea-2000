@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chimenea-2000</title>
+
+    <!-- Icono estándar -->
+    <link rel="icon" href="/chimenea.png" type="image/png">
+
+    <!-- Compatibilidad con accesos directos en Android y iOS -->
+    <link rel="apple-touch-icon" sizes="64x64" href="/chimenea.png">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,7 +58,7 @@
         .wide {
             grid-column: span 3;
         }
-        
+
         /* Estilo para los círculos de valores */
         .value-circle {
             position: fixed;
@@ -74,6 +81,7 @@
             left: 20px;
         }
     </style>
+    
     <script>
         function updateTrackValue() {
             fetch('/track')

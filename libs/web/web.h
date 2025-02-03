@@ -46,6 +46,7 @@ class WEBServer {
         void track();
         void readVolume();
         void stop();
+        void chimenea();
 
 	// Not used, served from LittleFS now
 	// index.html at /data
