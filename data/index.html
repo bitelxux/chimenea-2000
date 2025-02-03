@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 0;
+            margin: 1;
             padding: 0;
             background-color: #f4f4f9;
         }
@@ -23,6 +23,9 @@
             gap: 10px;
             max-width: 300px;
             margin: 0 auto;
+        }
+        .spaced-container {
+            margin-top: 20px;
         }
         button {
             padding: 15px;
@@ -49,11 +52,10 @@
             grid-column: span 3;
         }
         
-        /* Estilo para el círculo con el valor */
-        #track-value {
+        /* Estilo para los círculos de valores */
+        .value-circle {
             position: fixed;
             bottom: 20px;
-            right: 20px;
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -65,10 +67,12 @@
             justify-content: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        
-        /* Ajuste de separación entre las hileras de botones */
-        .button-container + .button-container {
-            margin-top: 10px;
+        #track-value {
+            right: 20px;
+        }
+        #volume-value {
+            left: 20px;
+            background-color: #28a745;
         }
     </style>
     <script>
@@ -83,7 +87,21 @@
                 });
         }
 
-        window.onload = updateTrackValue;
+        function updateVolumeValue() {
+            fetch('/readVolume')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('volume-value').innerText = data.value;
+                })
+                .catch(error => {
+                    console.error('Error al obtener el volumen:', error);
+                });
+        }
+
+        window.onload = function () {
+            updateTrackValue();
+            updateVolumeValue();
+        };
 
         function sendCommand(command, button) {
             button.style.backgroundColor = "#0056b3";
@@ -96,6 +114,7 @@
                     if (response.ok) {
                         console.log(`${command} command sent successfully`);
                         updateTrackValue();
+                        updateVolumeValue();
                     } else {
                         console.error(`Failed to send ${command} command`);
                     }
@@ -116,15 +135,18 @@
         <button onclick="sendCommand('next', this)">>></button>
     </div>
 
-    <!-- Contenedor de botones de volumen y stop con separación vertical adecuada -->
-    <div class="button-container">
+    <!-- Contenedor de botones de volumen y stop con separación adecuada -->
+    <div class="button-container spaced-container">
         <button class="wide" onclick="sendCommand('volumeup', this)">Volume ↑</button>
         <button class="wide" onclick="sendCommand('volumedown', this)">Volume ↓</button>
         <button class="wide" onclick="sendCommand('stop', this)">■ Stop</button>
     </div>
 
-    <!-- Círculo para mostrar el valor de la pista, en la parte inferior derecha -->
-    <div id="track-value">0</div>
+    <!-- Círculo para mostrar el valor de la pista -->
+    <div id="track-value" class="value-circle">0</div>
+
+    <!-- Círculo para mostrar el volumen actual -->
+    <div id="volume-value" class="value-circle">0</div>
 </body>
 </html>
 

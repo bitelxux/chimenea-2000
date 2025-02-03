@@ -65,6 +65,7 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/volumeup"), HTTP_GET, [this]() { this->volumeup(); });
   this->server->on(F("/volumedown"), HTTP_GET, [this]() { this->volumedown(); });
   this->server->on(F("/track"), HTTP_GET, [this]() { this->track(); });
+  this->server->on(F("/readVolume"), HTTP_GET, [this]() { this->readVolume(); });
   // generic endpoints
   this->server->on(F("/help"), HTTP_GET, [this]() { this->help(); });
   this->server->on(F("/helloWorld"), HTTP_GET, [this]() { this->helloWorld(); });
@@ -143,12 +144,18 @@ void WEBServer::volumeup() {
 
 void WEBServer::volumedown() {
   this->log("called /volumedown endpoint");
-  if (volume > 2) {
+  if (volume >= 2) {
     volume -= 2;
     this->player->volume(volume);
   }
   this->server->sendHeader("Connection", "close");
   this->server->send(200, "text/plain", "OK\n");
+}
+
+void WEBServer::readVolume() {
+  this->log("called /readVolume endpoint");
+  String jsonResponse = "{\"value\": " + String(volume) + "}";
+  this->server->send(200, "application/json", jsonResponse);
 }
 
 void WEBServer::track() {

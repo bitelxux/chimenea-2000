@@ -43,6 +43,7 @@ class WEBServer {
         void volumeup();
         void volumedown();
         void track();
+        void readVolume();
         void stop();
 
 	// Not used, served from LittleFS now
