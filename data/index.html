@@ -33,6 +33,7 @@
             background-color: #007bff;
             color: #fff;
             transition: background-color 0.3s;
+            -webkit-tap-highlight-color: transparent;
         }
         button:hover {
             background-color: #0056b3;
@@ -41,15 +42,18 @@
             background-color: #0056b3;
             transition: none;
         }
+        .pressed {
+            background-color: #007bff !important;
+        }
         .wide {
             grid-column: span 3;
         }
-
+        
         /* Estilo para el círculo con el valor */
         #track-value {
             position: fixed;
-            bottom: 20px; /* Alineado abajo */
-            right: 20px; /* Alineado a la derecha */
+            bottom: 20px;
+            right: 20px;
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -61,19 +65,17 @@
             justify-content: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
+        
         /* Ajuste de separación entre las hileras de botones */
         .button-container + .button-container {
-            margin-top: 10px; /* Separación entre la fila de navegación y la fila de volumen/stop */
+            margin-top: 10px;
         }
     </style>
     <script>
-        // Esta función actualiza el valor mostrado en el círculo de la pista
         function updateTrackValue() {
-            fetch('/track')  // Endpoint cambiado a '/track'
-                .then(response => response.json())  // Asumimos que la respuesta es JSON
+            fetch('/track')
+                .then(response => response.json())
                 .then(data => {
-                    // Aquí actualizas el contenido del círculo
                     document.getElementById('track-value').innerText = data.value;
                 })
                 .catch(error => {
@@ -81,16 +83,19 @@
                 });
         }
 
-        // Llamada inicial para obtener el valor de la variable al cargar la página
         window.onload = updateTrackValue;
 
-        // Llamamos a la función para actualizar el valor cuando se presiona un botón
-        function sendCommand(command) {
+        function sendCommand(command, button) {
+            button.style.backgroundColor = "#0056b3";
+            setTimeout(() => {
+                button.style.backgroundColor = "#007bff";
+            }, 200);
+
             fetch(`/${command}`)
                 .then(response => {
                     if (response.ok) {
                         console.log(`${command} command sent successfully`);
-                        updateTrackValue(); // Actualiza el valor después de enviar el comando
+                        updateTrackValue();
                     } else {
                         console.error(`Failed to send ${command} command`);
                     }
@@ -106,22 +111,20 @@
 
     <!-- Contenedor de botones de navegación -->
     <div class="button-container">
-        <button onclick="sendCommand('previous')"><<</button>
-        <button onclick="sendCommand('play')">▶</button>
-        <button onclick="sendCommand('next')">>></button>
+        <button onclick="sendCommand('previous', this)"><<</button>
+        <button onclick="sendCommand('play', this)">▶</button>
+        <button onclick="sendCommand('next', this)">>></button>
     </div>
 
     <!-- Contenedor de botones de volumen y stop con separación vertical adecuada -->
     <div class="button-container">
-        <button class="wide" onclick="sendCommand('volumeup')">Volume ↑</button>
-        <button class="wide" onclick="sendCommand('volumedown')">Volume ↓</button>
-        <button class="wide" onclick="sendCommand('stop')">■ Stop</button>
+        <button class="wide" onclick="sendCommand('volumeup', this)">Volume ↑</button>
+        <button class="wide" onclick="sendCommand('volumedown', this)">Volume ↓</button>
+        <button class="wide" onclick="sendCommand('stop', this)">■ Stop</button>
     </div>
 
     <!-- Círculo para mostrar el valor de la pista, en la parte inferior derecha -->
-    <div id="track-value">
-        0
-    </div>
+    <div id="track-value">0</div>
 </body>
 </html>
 
