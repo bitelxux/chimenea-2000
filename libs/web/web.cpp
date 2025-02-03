@@ -134,8 +134,8 @@ void WEBServer::previous() {
 
 void WEBServer::volumeup() {
   this->log("called /volumeup endpoint");
-  if (volume <= 28) {
-    volume += 2;
+  if (volume < 30) {
+    volume += 1;
     this->player->volume(volume);
   }
   this->server->sendHeader("Connection", "close");
@@ -144,8 +144,8 @@ void WEBServer::volumeup() {
 
 void WEBServer::volumedown() {
   this->log("called /volumedown endpoint");
-  if (volume >= 2) {
-    volume -= 2;
+  if (volume > 0) {
+    volume -= 1;
     this->player->volume(volume);
   }
   this->server->sendHeader("Connection", "close");
