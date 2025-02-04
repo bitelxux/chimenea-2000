@@ -18,6 +18,7 @@ Player::Player(App* app) {
         while(true);
     }
     else {
+        delay(1000);
         this->totalFiles = this->readFileCounts();
         char buffer[100];
         sprintf(buffer, "DPPlayer found [%d tracks]", this->totalFiles);
