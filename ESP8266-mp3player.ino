@@ -132,7 +132,9 @@ void readConfigFile() {
 void setup() {
 
   pinMode(BUSY_PIN, INPUT_PULLUP);
-  pinMode(LED, OUTPUT);
+  pinMode(RESET, INPUT_PULLUP);
+  pinMode(GREEN_LED, OUTPUT);
+  pinMode(BLUE_LED, OUTPUT);
 
   Serial.begin(115200);
 
@@ -206,7 +208,32 @@ void _resetWifi() {
   ESP.restart();
 }
 
+void check_reset() {
+    static int lastPressed = digitalRead(RESET);
+    static bool pressed = false;
+
+    if (digitalRead(RESET) == LOW) {
+        if( !pressed ) {
+          pressed = true;
+          lastPressed = millis();
+        }          
+        if (millis() - lastPressed > 4000) {
+           app->log("Restarting board");
+           for (int i=0; i<10; i++) {
+             digitalWrite(BLUE_LED, i%2);
+             delay(200);
+           }
+           ESP.restart();
+        }
+    }
+    else {
+      pressed = false;
+    }    
+}
+
 void loop() {
+
+  check_reset();
   app->attendTimers();
   webServer->handleClient();
   player->handle();
