@@ -33,6 +33,7 @@ upload:
 upload_usb:
 	# erase_flash will delete wifi configuration
 	#esptool.py --port $(USB_PORT) erase_flash
+	killall -TERM screen || true
 	arduino-cli upload --fqbn esp8266:esp8266:$(board) -p $(USB_PORT) -t .
 clean:
 	rm -rf build

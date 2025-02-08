@@ -153,7 +153,7 @@ void setup() {
 
   EEPROM.begin(EEPROM_SIZE);
 
-  app = new App(BOARD_ID, server);
+  app = new App(BOARD_ID, server, BLUE_LED);
 
   unsigned short boots = app->incBoots();
   sprintf(buffer, "boot: %d\n", boots);
@@ -165,13 +165,10 @@ void setup() {
   //set config save notify callback
   //app->wifiManager->setSaveConfigCallback(saveConfigCallback);
 
-  app->startWiFiManager();
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
+  if (app->startWiFiManager()) {
+      Serial.println("Connected to WiFi");
   }
-  
-  Serial.println("Connected to WiFi");
+
   player = new Player(app);
   
   //save the custom parameters to FS
@@ -221,12 +218,12 @@ void check_reset() {
           lastPressed = millis();
         }          
         if (millis() - lastPressed > 4000) {
-           app->log("Restarting board");
+           app->log("Resetting WIFI. Please, configure on WifiManager.");
            for (int i=0; i<10; i++) {
              digitalWrite(BLUE_LED, i%2);
              delay(200);
            }
-           ESP.restart();
+           resetWIFI();
         }
     }
     else {
