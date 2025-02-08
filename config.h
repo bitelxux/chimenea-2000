@@ -6,7 +6,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea-2000"
-#define VERSION "20250208.476"
+#define VERSION "20250208.477"
 
 //EEPROM
 #define EEPROM_SIZE 1024
@@ -20,8 +20,8 @@
 // BOARD
 #define RESET 13
 #define GREEN_LED 14
-#define BLUE_LED 15
-#define BUSY_PIN 16
+#define BLUE_LED 16
+#define BUSY_PIN 15
 
 // to connect FDF player with SoftwareSerial
 #define RX 4
