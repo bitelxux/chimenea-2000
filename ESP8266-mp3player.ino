@@ -204,7 +204,7 @@ void resetWIFI() {
 
 void _resetWifi() {
   app->log("reset WIFI networks");
-  app->wifiManager->resetSettings();
+  app->resetWIFI();
   ESP.restart();
 }
 
@@ -232,9 +232,7 @@ void check_reset() {
 }
 
 void loop() {
-
   check_reset();
-  app->attendTimers();
   webServer->handleClient();
   player->handle();
 }
