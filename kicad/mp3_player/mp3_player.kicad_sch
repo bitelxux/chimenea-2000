@@ -1484,16 +1484,6 @@
 	)
 	(wire
 		(pts
-			(xy 147.32 74.93) (xy 166.37 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "67e70541-3bca-48fa-bd5c-999c56e68dd4")
-	)
-	(wire
-		(pts
 			(xy 158.75 127) (xy 149.86 127)
 		)
 		(stroke
@@ -1671,6 +1661,16 @@
 			(type default)
 		)
 		(uuid "a122b733-c92c-4a08-8459-865a048c1072")
+	)
+	(wire
+		(pts
+			(xy 191.77 77.47) (xy 207.01 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a26b44b5-a186-4b3b-a6c4-762fb15d0b06")
 	)
 	(wire
 		(pts
@@ -1896,6 +1896,16 @@
 	)
 	(text "IO15"
 		(exclude_from_sim no)
+		(at 183.642 77.724 0)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+		)
+		(uuid "61fb3a5f-3a09-49d4-bbf8-d9a575d0280a")
+	)
+	(text "IO16"
+		(exclude_from_sim no)
 		(at 173.99 69.85 0)
 		(effects
 			(font
@@ -1936,22 +1946,22 @@
 	)
 	(global_label "BUSY"
 		(shape input)
-		(at 147.32 74.93 180)
+		(at 207.01 77.47 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.016 1.016)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "39c712a3-4bfa-42e3-a6ed-9d8863de38c7")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 141.0132 74.93 0)
+			(at 213.3168 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -2380,7 +2390,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm"
+		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm_H4.3mm"
 			(at 179.07 91.44 0)
 			(effects
 				(font

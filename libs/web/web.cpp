@@ -84,10 +84,10 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/WIFISignal"), HTTP_GET, [this]() { this->WIFISignal(); });
   this->server->on(F("/scanNetworks"), HTTP_GET, [this]() { this->scanNetworks(); });
   this->server->on(F("/resetEEPROM"), HTTP_GET, [this]() { this->resetEEPROM(); });
-  this->server->on(F("/greenon"), HTTP_GET, [this]() { this->greenon(); });
-  this->server->on(F("/greenoff"), HTTP_GET, [this]() { this->greenoff(); });
-  this->server->on(F("/blueon"), HTTP_GET, [this]() { this->blueon(); });
-  this->server->on(F("/blueoff"), HTTP_GET, [this]() { this->blueoff(); });
+  this->server->on(F("/green/on"), HTTP_GET, [this]() { this->greenon(); });
+  this->server->on(F("/green/off"), HTTP_GET, [this]() { this->greenoff(); });
+  this->server->on(F("/blue/on"), HTTP_GET, [this]() { this->blueon(); });
+  this->server->on(F("/blue/off"), HTTP_GET, [this]() { this->blueoff(); });
 }
 
 String WEBServer::getClientStrIP() {

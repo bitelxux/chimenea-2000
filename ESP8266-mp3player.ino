@@ -165,8 +165,8 @@ void setup() {
   //set config save notify callback
   //app->wifiManager->setSaveConfigCallback(saveConfigCallback);
 
+  app->startWiFiManager();
   while (WiFi.status() != WL_CONNECTED) {
-    app->startWiFiManager();
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
