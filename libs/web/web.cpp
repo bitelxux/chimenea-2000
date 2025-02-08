@@ -84,6 +84,10 @@ void WEBServer::configureEndPoints() {
   this->server->on(F("/WIFISignal"), HTTP_GET, [this]() { this->WIFISignal(); });
   this->server->on(F("/scanNetworks"), HTTP_GET, [this]() { this->scanNetworks(); });
   this->server->on(F("/resetEEPROM"), HTTP_GET, [this]() { this->resetEEPROM(); });
+  this->server->on(F("/greenon"), HTTP_GET, [this]() { this->greenon(); });
+  this->server->on(F("/greenoff"), HTTP_GET, [this]() { this->greenoff(); });
+  this->server->on(F("/blueon"), HTTP_GET, [this]() { this->blueon(); });
+  this->server->on(F("/blueoff"), HTTP_GET, [this]() { this->blueoff(); });
 }
 
 String WEBServer::getClientStrIP() {
@@ -242,6 +246,30 @@ void WEBServer::boardID() {
 void WEBServer::helloWorld() {
   this->log("called /helloWorld endpoint");
   this->server->send(200, "text/json", "{\"name\": \"Hello world\"}");
+}
+
+void WEBServer::greenon() {
+  this->log("called /greenon endpoint");
+  digitalWrite(GREEN_LED, HIGH);
+  this->server->send(200, "text/plain", "OK\n");
+}
+
+void WEBServer::greenoff() {
+  this->log("called /greenoff endpoint");
+  digitalWrite(GREEN_LED, LOW);
+  this->server->send(200, "text/plain", "OK\n");
+}
+
+void WEBServer::blueon() {
+  this->log("called /blueon endpoint");
+  digitalWrite(BLUE_LED, HIGH);
+  this->server->send(200, "text/plain", "OK\n");
+}
+
+void WEBServer::blueoff() {
+  this->log("called /blueoff endpoint");
+  digitalWrite(BLUE_LED, LOW);
+  this->server->send(200, "text/plain", "OK\n");
 }
 
 void WEBServer::help() {

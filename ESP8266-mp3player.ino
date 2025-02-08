@@ -136,6 +136,9 @@ void setup() {
   pinMode(GREEN_LED, OUTPUT);
   pinMode(BLUE_LED, OUTPUT);
 
+  digitalWrite(GREEN_LED, LOW);
+  digitalWrite(BLUE_LED, LOW);
+
   Serial.begin(115200);
 
   Serial.println('\n\n');

@@ -37,6 +37,10 @@ class WEBServer {
     	void WIFISignal();
     	void scanNetworks();
     	void resetEEPROM();
+	void greenon();
+	void blueon();
+	void greenoff();
+	void blueoff();
         // Specific player endpoints
         void play();
         void next();

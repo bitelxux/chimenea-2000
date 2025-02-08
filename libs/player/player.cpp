@@ -75,5 +75,5 @@ void Player::previous() {
 
 void Player::handle() {
   int playing = !digitalRead(BUSY_PIN);
-  digitalWrite(GREEN_LED, digitalRead(BUSY_PIN));
+  digitalWrite(GREEN_LED, playing);
 }
