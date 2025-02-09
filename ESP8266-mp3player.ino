@@ -233,6 +233,7 @@ void check_reset() {
 
 void loop() {
   check_reset();
+  app->attendTimers();
   webServer->handleClient();
   player->handle();
 }
