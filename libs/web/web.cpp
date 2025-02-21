@@ -127,7 +127,6 @@ void WEBServer::chimenea() {
 
 void WEBServer::play() {
   this->log("called /play endpoint");
-  this->log("before play");
   if (!this->player->available()) {
      this->log("failed to communicate with player");
      this->server->send(400, "text/plain", "ERROR\n");
