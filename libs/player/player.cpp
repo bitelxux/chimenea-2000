@@ -87,7 +87,7 @@ void Player::handle() {
   static unsigned long lastTime = millis();
   unsigned long currentMillis = millis();
 
-  if (currentMillis - lastTime < 500 ) {
+  if (currentMillis - lastTime < 2500 ) {
      return;
   }
 
