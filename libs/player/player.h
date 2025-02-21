@@ -20,8 +20,9 @@ class Player: public DFRobotDFPlayerMini {
 		unsigned int track();
     private:
         App* app;
-		unsigned int trackNumber;
-		unsigned int totalFiles;
+	unsigned int trackNumber;
+	unsigned int totalFiles;
+	bool stopped;
 };      
 
 #endif

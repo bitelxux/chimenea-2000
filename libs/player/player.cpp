@@ -13,8 +13,7 @@ Player::Player(App* app) {
     Serial.println("serial started");
 
     if (!this->begin(serial)) {
-        //this->app->log("DFPlayer Mini not detected! Rebooting board");
-        Serial.println("DFPlayer Mini not detected! Rebooting board");
+        this->app->log("DFPlayer Mini not detected! Rebooting board");
         while(true);
     }
     else {
@@ -22,9 +21,8 @@ Player::Player(App* app) {
         this->totalFiles = this->readFileCounts();
         char buffer[100];
         sprintf(buffer, "DPPlayer found [%d tracks]", this->totalFiles);
-	Serial.println(buffer);
-        //this->app->log(buffer);
-        this->volume(10);
+        this->app->log(buffer);
+        this->volume(30);
         this->play(this->trackNumber);
     }
 }
@@ -35,14 +33,18 @@ unsigned int Player::track() {
 
 void Player::play(int track) {
     track = (track == 0) ? this->trackNumber : track;
-    DFRobotDFPlayerMini::loop(track);
+    //DFRobotDFPlayerMini::loop(track);
+    this->loop(track);
+    this->stopped = false;
     char buffer[50];
     sprintf(buffer, "Playing track %d", track);
     this->app->log(buffer);
 }
 
 void Player::stop() {
+    this->stopped = true;
     DFRobotDFPlayerMini::stop();
+    this->app->log("Stopping reproduction");
 }
 
 void Player::next() {
@@ -74,6 +76,32 @@ void Player::previous() {
 }
 
 void Player::handle() {
-  int playing = !digitalRead(BUSY_PIN);
-  digitalWrite(GREEN_LED, playing);
+  // on this module loop() doesnt work
+  // implementing it
+  // int playing = !digitalRead(BUSY_PIN);
+  // defective module. BUSY pin works randomly
+  // reading status instead
+
+  //int playing = !digitalRead(BUSY_PIN);
+
+  static unsigned long lastTime = millis();
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - lastTime < 500 ) {
+     return;
+  }
+
+  int playing = this->readState();
+  lastTime = currentMillis;
+
+  if (!this->stopped && playing == 512) {
+     digitalWrite(GREEN_LED, playing);
+     this->play(this->trackNumber);
+     lastTime = currentMillis + 2000; // to give status time to be set
+  }
+
 }
+
+
+
+

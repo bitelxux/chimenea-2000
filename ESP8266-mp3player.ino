@@ -153,7 +153,7 @@ void setup() {
 
   EEPROM.begin(EEPROM_SIZE);
 
-  app = new App(BOARD_ID, server, BLUE_LED);
+  app = new App(BOARD_ID, "http://192.168.1.104:8888", BLUE_LED);
 
   unsigned short boots = app->incBoots();
   sprintf(buffer, "boot: %d\n", boots);
