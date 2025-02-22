@@ -82,8 +82,13 @@ void Player::handle() {
   // defective module. BUSY pin works randomly
   // reading status instead
 
-  //int playing = !digitalRead(BUSY_PIN);
+  // on a legimit working module, all this method should do is
+  // >>>>  dititalWrite(digitalRead(BUSY_PIN));
+  // this->loop(track) would replay the current track automatically
   //
+
+  // On a faulty module where loop() doesn't work, a workaround
+  // to loop is required
 
   static unsigned long lastTime = millis();
   unsigned long currentMillis = millis();
