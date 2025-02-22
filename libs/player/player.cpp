@@ -83,22 +83,24 @@ void Player::handle() {
   // reading status instead
 
   //int playing = !digitalRead(BUSY_PIN);
+  //
 
   static unsigned long lastTime = millis();
   unsigned long currentMillis = millis();
 
-  if (currentMillis - lastTime < 2500 ) {
+  if (currentMillis - lastTime < 1000 ) {
      return;
   }
 
   int playing = this->readState();
   lastTime = currentMillis;
 
+  digitalWrite(GREEN_LED, (playing == 513) ? HIGH : LOW);
+
   if (!this->stopped && playing == 512) {
-     digitalWrite(GREEN_LED, playing);
      this->play(this->trackNumber);
-     lastTime = currentMillis + 2000; // to give status time to be set
   }
+
 
 }
 
