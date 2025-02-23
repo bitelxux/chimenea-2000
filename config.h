@@ -6,7 +6,7 @@
 #pragma pack(push, 1)
 
 #define BOARD_ID "chimenea-2000"
-#define VERSION "20250223.692"
+#define VERSION "20250223.694"
 
 //EEPROM
 #define EEPROM_SIZE 1024
@@ -24,6 +24,7 @@
 #define BUSY_PIN 12
 
 // to connect FDF player with SoftwareSerial
+// on some modules dfplayer.tx -> esp8266.rx might require a 1K resistor
 #define RX 4
 #define TX 5
 
