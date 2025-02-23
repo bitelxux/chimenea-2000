@@ -89,6 +89,10 @@ void Player::handle() {
 
   // On a faulty module where loop() doesn't work, a workaround
   // to loop is required
+  //
+  //  yet there's a problem where a double shot happens
+  //  and track is replayed twice ... seems to be the readState
+  //  taking too long to update, but we can't add a delay here
 
   static unsigned long lastTime = millis();
   unsigned long currentMillis = millis();
