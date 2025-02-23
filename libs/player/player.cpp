@@ -33,9 +33,9 @@ unsigned int Player::track() {
 
 void Player::play(int track) {
     track = (track == 0) ? this->trackNumber : track;
-    //DFRobotDFPlayerMini::loop(track);
-    this->loop(track);
     this->stopped = false;
+    //this->loop(track);
+    DFRobotDFPlayerMini::loop(track);
     char buffer[50];
     sprintf(buffer, "Playing track %d", track);
     this->app->log(buffer);
@@ -93,16 +93,15 @@ void Player::handle() {
   //  yet there's a problem where a double shot happens
   //  and track is replayed twice ... seems to be the readState
   //  taking too long to update, but we can't add a delay here
+  //
 
   static unsigned long lastTime = millis();
-  unsigned long currentMillis = millis();
 
-  if (currentMillis - lastTime < 1000 ) {
+  if (millis() - lastTime < 1000 ) {
      return;
   }
 
   int playing = this->readState();
-  lastTime = currentMillis;
 
   digitalWrite(GREEN_LED, (playing == 513) ? HIGH : LOW);
 
@@ -110,6 +109,7 @@ void Player::handle() {
      this->play(this->trackNumber);
   }
 
+  lastTime = millis();
 
 }
 
