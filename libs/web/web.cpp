@@ -4,7 +4,7 @@
 #include <web.h>
 #include "../../config.h"
 
-int volume = 10;
+int volume = 25;
 
 WEBServer::WEBServer(App* app) {
     this->server = new ESP8266WebServer(80);

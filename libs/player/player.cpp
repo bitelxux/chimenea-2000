@@ -5,7 +5,7 @@ SoftwareSerial serial(RX, TX, false);
 
 Player::Player(App* app) {
     this->app = app;
-    this->trackNumber = 1;
+    this->trackNumber = 15;
     this->totalFiles = 0;
 
     Serial.println("starting serial");
@@ -22,7 +22,7 @@ Player::Player(App* app) {
         char buffer[100];
         sprintf(buffer, "DPPlayer found [%d tracks]", this->totalFiles);
         this->app->log(buffer);
-        this->volume(30);
+        this->volume(25);
         this->play(this->trackNumber);
     }
 }
@@ -106,6 +106,7 @@ void Player::handle() {
   digitalWrite(GREEN_LED, (playing == 513) ? HIGH : LOW);
 
   if (!this->stopped && playing == 512) {
+     this->app->log("workaround looping");
      this->play(this->trackNumber);
   }
 
